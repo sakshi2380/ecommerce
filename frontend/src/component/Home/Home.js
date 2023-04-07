@@ -7,7 +7,7 @@ import {getProduct,clearErrors} from "../../actions/productAction"
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from 'react-alert';
-
+import UserOption from "../layout/Header/UserOption"
 // import { useAlert } from "react-alert";
 const product = {
   name:"blueshirt",
@@ -35,6 +35,7 @@ const Home = () => {
         <Loader />
       ) : (
         <Fragment>
+          <UserOption/>
           <MetaData title="ECOMMERCE" />
 
           <div className="banner">

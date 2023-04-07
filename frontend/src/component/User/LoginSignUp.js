@@ -8,6 +8,7 @@ import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { authenticate } from "../../auth/helper";
 
 
 const LoginSignUp = () => {
@@ -38,7 +39,11 @@ const LoginSignUp = () => {
         console.log(response);
       }
       else{
-        navigate("/products");
+        // localStorage.setItem("token", response?.data?.token);
+        authenticate(response?.data,()=>{
+          console.log("sign in");
+          navigate("/products");
+        })
       }
     })
   };
