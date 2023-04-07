@@ -13,6 +13,7 @@ import Search from "./component/Product/Search"
 import LoginSignUp from './component/User/LoginSignUp';
 import UserOption from "./component/layout/Header/UserOption"
 import Profile from './component/User/Profile';
+import UpdateProfile from './component/User/UpdateProfile';
 function App() {
   React.useEffect(() => {
     WebFont.load({
@@ -32,6 +33,7 @@ function App() {
         <Route exact path="/search" element={<Search/>} />
         <Route exact path="/login" element={<LoginSignUp/>} />
         <Route exact path="/useroption" element={<UserOption/>} />
+        <Route exact path="/me/update" element={<UpdateProfile/>} />
         <Route exact path="/account" element={<Profile/>} />
         
 

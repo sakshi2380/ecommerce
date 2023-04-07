@@ -39,8 +39,8 @@ const LoginSignUp = () => {
         console.log(response);
       }
       else{
-        // localStorage.setItem("token", response?.data?.token);
-        authenticate(response?.data,()=>{
+        localStorage.setItem("token", response?.data?.token);
+        authenticate(response?.data?.user,()=>{
           console.log("sign in");
           navigate("/products");
         })
