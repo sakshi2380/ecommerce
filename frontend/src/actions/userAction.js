@@ -36,6 +36,7 @@ import {
     USER_DETAILS_FAIL,
     CLEAR_ERRORS,
   } from "../constants/userConstants";
+  import { BASE_URL } from "../constants/globals";
   import axios from "axios";
   // Login
 export const login = (email, password) => async (dispatch) => {
@@ -45,7 +46,7 @@ export const login = (email, password) => async (dispatch) => {
       const config = { headers: { "Content-Type": "application/json" } };
   
       const { data } = await axios.post(
-        `/api/login`,
+        `${BASE_URL}/api/login`,
         { email, password },
         config
       );
@@ -63,7 +64,7 @@ export const register = (userData) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const { data } = await axios.post(`/api/register`, userData, config);
+    const { data } = await axios.post(`${BASE_URL}/api/register`, userData, config);
 
     dispatch({ type: REGISTER_USER_SUCCESS, payload: data.user });
   } catch (error) {

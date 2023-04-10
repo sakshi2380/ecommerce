@@ -1,18 +1,18 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { isAutheticated } from "./index";
 
-const AdminRoute = ({ component: Component, ...rest }) => {
+import {  Outlet, Navigate } from "react-router-dom";
+import { isAutheticated } from "./index.js";
+import React, { Fragment } from "react";
+const AdminRoute = ({ element: Element, ...rest }) => {
   return (
-    <Route
+    <Outlet
       {...rest}
       render={props =>
         isAutheticated() && isAutheticated().user.role == "admin" ? (
-          <Component {...props} />
+          <Element {...props} />
         ) : (
-          <Redirect
+          <Navigate
             to={{
-              pathname: "/signin",
+              pathname: "/login",
               state: { from: props.location }
             }}
           />
