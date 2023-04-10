@@ -1,85 +1,108 @@
 import React, { Fragment, useState, useEffect } from "react";
-import "./ForgotPassword.css";
 import axios from "axios";
-import Loader from "../layout/Loader/Loader";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import { useDispatch, useSelector } from "react-redux";
-//import { clearErrors, forgotPassword } from "../../actions/userAction";
-import { useAlert } from "react-alert";
-import MetaData from "../layout/MetaData";
+import { validateEmail } from "../../utils/validations";
+import { toast } from "react-toastify";
+
+import { isAutheticated, getLocalStorage,postWithoutToken } from "../../auth/helper";
+import { updateProfile } from "../../auth/helper";
+
+import profilePng from "../../images/13.png";
+const DefaultValues = {
+  email: "",
+};
 
 const ForgotPassword = () => {
-  const dispatch = useDispatch();
-  const alert = useAlert();
+  
+  const [values, setValues] = useState(DefaultValues);
+  const [errors, setErrors] = useState({
+    email: "",
+  });
 
-//   const { error, message, loading } = useSelector(
-//     (state) => state.forgotPassword
-//   );
-
-  const [email, setEmail] = useState("");
-console.log(email);
-  const forgotPasswordSubmit = (e) => {
-    e.preventDefault();
-     axios.post("http://localhost:4000/api/login",email)
-
-    .then(result =>{
-      alert("sucess")
-    }) 
-    .catch(err =>{
-      alert("erroe")
-    })  
-   
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: "" });
+    }
   };
 
-//   useEffect(() => {
-//     if (error) {
-//       alert.error(error);
-//       //dispatch(clearErrors());
-//     }
+  const validate = () => {
+    let tempErrors = { ...errors };
+    let valid = true;
 
-//     if (message) {
-//       alert.success(message);
-//     }
-//   }, [dispatch, error, alert, message]);
+    const emailError = validateEmail(values.email);
+    if (emailError) {
+      tempErrors = { ...tempErrors, email: emailError };
+      valid = false;
+    }
+    setErrors(tempErrors);
+    return valid;
+  };
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (!validate()) {
+      return false;
+    }
+
+    postWithoutToken("/password/forgot", values)
+      .then((response) => {
+        console.log(response, "rr");
+      })
+      .catch((error) => {
+        toast.error("Something went wrong");
+      });
+
+    console.log("Submitted", values);
+    setValues(DefaultValues);
+    return true;
+  };
   return (
-    // <Fragment>
-    //   {loading ? (
-    //     <Loader />
-    //   ) : (
-        <Fragment>
-          <MetaData title="Forgot Password" />
-          <div className="forgotPasswordContainer">
-            <div className="forgotPasswordBox">
-              <h2 className="forgotPasswordHeading">Forgot Password</h2>
-
-              <form
-                className="forgotPasswordForm"
-                onSubmit={forgotPasswordSubmit}
-              >
-                <div className="forgotPasswordEmail">
-                  <MailOutlineIcon />
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    required
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-
-                <input
-                  type="submit"
-                  value="Send"
-                  className="forgotPasswordBtn"
-                />
-              </form>
-            </div>
+    <>
+    <section className="calcc bg-light">
+      <div className="container py-5 h-100">
+        <div className="row  align-items-center justify-content-center hvh-80 ">
+          <div className="col-md-8 col-lg-7 col-xl-6 text-center">
+            <img src={profilePng} className="img-fluid" alt="image" />
           </div>
-        </Fragment>
-    //   )}
-    // </Fragment>
+          <div className="col-md-7 col-lg-5 col-xl-5">
+            <div className="mb-3 text-primary">
+              <h3>Forgot Password</h3>
+            </div>
+            <form onSubmit={onSubmit}>
+              <div className="form-outline mb-4">
+                <label className="form-label" htmlFor="form1Example13">
+                  Email address
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="form1Example13"
+                  onChange={handleChange}
+                  value={values.email}
+                  error={errors.email}
+                  className="form-control form-control-lg"
+                />
+                {errors.email && (
+                  <p className="text-danger insta-smart-error">
+                    {errors.email}
+                  </p>
+                )}
+              </div>
+
+              <div className="h-45 d-grid ">
+                <button
+                  type="submit"
+                  className="btn btn-outline-primary btn-sm btn-block c-btn "
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </>
   );
 };
 

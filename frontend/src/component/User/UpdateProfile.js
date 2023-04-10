@@ -5,54 +5,62 @@ import Loader from "../layout/Loader/Loader";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, updateProfile, loadUser } from "../../actions/userAction";
+import { clearErrors, loadUser } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 import MetaData from "../layout/MetaData";
-import { isAutheticated } from "../../auth/helper";
-
+import { isAutheticated,setLocalStorage, getLocalStorage, authenticate } from "../../auth/helper";
+import { updateProfile } from "../../auth/helper";
+import { toast } from "react-toastify";
 const UpdateProfile = ({ history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-
-  const {  loading } = useSelector(
-    (state) => state.productDetails
-  );
+  const token = getLocalStorage("token");
+  const [userToken, setUserToken] = useState('')
+  const jwt = getLocalStorage("jwt");
+  console.log(JSON.parse(jwt)._id,'12');
+  const id =JSON.parse(jwt)._id;
+  const { loading } = useSelector((state) => state.productDetails);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState();
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+  console.log(email,'email',name,'name');
 
-  
+  useEffect(() => {
+    setUserToken(JSON.parse(token))
+  },[])
 
   const updateProfileSubmit = (e) => {
-//     e.preventDefault();
-//     if(isAutheticated){
-//     axios.put("http://localhost:4000/api/me/profileupdate",{
-//       name:name,
-//       email:email,
-      
-//     }).then((response)=>{
-//       console.log(response);
-//     })
-// }
+    const obj ={
+      email:email,
+      name:name
+    }
+    updateProfile(id,userToken, obj)
+      .then((response) => {
+        console.log(response, "123");
+        if (response.success == true) {
+          // toast.success("Sucess");
+          setLocalStorage("token",response.token)
+          authenticate(response?.user,()=>{
+            console.log("login");
+          })
+          // navigate("/login")
+        } 
+      })
+      .catch((response) => {
+        toast.error("Something went wrong");
+      });
   };
-   
 
-    
-  
+  // if (isUpdated) {
+  //   alert.success("Profile Updated Successfully");
+  //   //dispatch(loadUser());
 
-   
+  //   history.push("/account");
 
-    // if (isUpdated) {
-    //   alert.success("Profile Updated Successfully");
-    //   //dispatch(loadUser());
-
-    //   history.push("/account");
-
-     
   return (
     <Fragment>
       {loading ? (
@@ -67,7 +75,7 @@ const UpdateProfile = ({ history }) => {
               <form
                 className="updateProfileForm"
                 encType="multipart/form-data"
-                onSubmit={updateProfileSubmit}
+                // onSubmit={updateProfileSubmit}
               >
                 <div className="updateProfileName">
                   <FaceIcon />
@@ -101,11 +109,14 @@ const UpdateProfile = ({ history }) => {
                     //onChange={updateProfileDataChange}
                   />
                 </div>
-                <input
-                  type="submit"
+                {/* <input
+                  type="submit",
                   value="Update"
                   className="updateProfileBtn"
-                />
+                /> */}
+                <button type="button"  className="btn btn-primary" onClick={updateProfileSubmit}>
+                  cLICK ME
+                </button>
               </form>
             </div>
           </div>
@@ -114,6 +125,5 @@ const UpdateProfile = ({ history }) => {
     </Fragment>
   );
 };
-
 
 export default UpdateProfile;

@@ -93,6 +93,8 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: `Email sent to ${user.email} successfully`,
+      resetToken,
+      status:200
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
@@ -168,15 +170,17 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
   sendToken(user, 200, res);
 });
+
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
     
 
   };
-
-  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+  console.log(ne);
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,

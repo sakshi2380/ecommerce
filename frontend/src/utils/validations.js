@@ -52,6 +52,16 @@ export const validatePassword = (value) => {
 
   return false;
 };
+export const validcPassword = (value) => {
+  console.log(value, "valllllle");
+  if (IsEmpty(value)) {
+    return Notification.VAL_CPASSWORD;
+  }
+  if (value.password !== value.cpassword) {
+    return Notification.VAL_ERROR_CPASSWORD;
+  }
+  return false;
+};
 
 export const validName = (value) => {
   if (IsEmpty(value)) {

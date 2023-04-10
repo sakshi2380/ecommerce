@@ -10,7 +10,8 @@ import Loader from "./component/layout/Loader/Loader";
 import ProductDetails from "./component/Product/ProductDetails";
 import Products from "./component/Product/Products";
 import Search from "./component/Product/Search";
-import LoginSignUp from "./component/User/LoginSignUp";
+import SignUp from "./component/User/SignUp";
+
 import UserOption from "./component/layout/Header/UserOption";
 import Profile from "./component/User/Profile";
 import UpdateProfile from "./component/User/UpdateProfile";
@@ -38,6 +39,7 @@ function App() {
         <Route path="/products/:keyword" element={<Products />} />
         <Route exact path="/search" element={<Search />} />
         <Route exact path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
         <Route exact path="/useroption" element={<UserOption />} />
         <Route exact path="/password/forgot" element={<ForgotPassword />} />
         <Route exact path="/password/reset/:token" element={<ResetPassword />}/>
