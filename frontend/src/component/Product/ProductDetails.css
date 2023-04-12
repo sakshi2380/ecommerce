@@ -70,7 +70,7 @@
     background-color: rgba(0, 0, 0, 0.616);
     padding: 0.5vmax;
     cursor: pointer;
-    color: white;
+    color: rgb(161, 123, 123);
     transition: all 0.5s;
   }
   .detailsBlock-3-1-1 > button:hover {
@@ -82,9 +82,14 @@
     padding: 0.5vmax;
     width: 1vmax;
     text-align: center;
+    
     outline: none;
     font: 400 0.8vmax "Roboto";
-    color: rgba(0, 0, 0, 0.74);
+    color: rgba(141, 106, 106, 0.74);
+  }
+  .detailsBlock-3-1-1 > span{
+    margin-left: 4px;
+    margin-right: 4px;
   }
   
   .detailsBlock-3-1 > button:last-child {

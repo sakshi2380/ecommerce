@@ -22,7 +22,7 @@ const user = await User.create({
     name,email,password,
     avatar:{
       public_id: "sample url",
-      url: "sample url",
+      url: "https://raw.githubusercontent.com/meabhisingh/mernProjectEcommerce/master/frontend/src/images/Profile.png",
     }
 })
 sendToken(user,201,res)
@@ -93,6 +93,8 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: `Email sent to ${user.email} successfully`,
+      resetToken,
+      status:200
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
@@ -150,7 +152,7 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
 
 // update User password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user.id).select("+password");
+  const user = await User.findById(req.params.id).select("+password");
 
   const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
@@ -168,23 +170,23 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
   sendToken(user, 200, res);
 });
+
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
     
 
   };
-
-  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+ 
+  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
     new: true,
     runValidators: true,
     useFindAndModify: false,
   });
 
-  res.status(200).json({
-    success: true,
-  });
+  sendToken(user,200,res)
 });
 
 // Get all users(admin)

@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import MetaData from "../layout/MetaData";
 import { useParams } from 'react-router-dom';
 import Pagination from "react-js-pagination";
+import UserOption from "../layout/Header/UserOption";
 
 const categories = [
     "Laptop",
@@ -71,6 +72,7 @@ console.log(products,'ffff');
           <Loader />
         ) : (
           <Fragment>
+            <UserOption/>
             <MetaData title="PRODUCTS -- Trendskart" />
             <h2 className="productsHeading">Products</h2>
   

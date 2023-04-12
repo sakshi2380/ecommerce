@@ -5,6 +5,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PersonIcon from "@material-ui/icons/Person";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { isAutheticated,setLocalStorage, getLocalStorage, authenticate } from "../../../auth/helper";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { useNavigate } from "react-router-dom";
@@ -14,23 +15,25 @@ import { useDispatch, useSelector } from "react-redux";
 //mport profilePng from "../../../images/profilePng"
 
 const UserOption = () => {
-    //const { cartItems } = useSelector((state) => state.cart);
+    const { cartItems } = useSelector((state) => state.cart);
 
   const [open, setOpen] = useState(false);
   const history = useNavigate();
   const alert = useAlert();
   const dispatch = useDispatch();
-
+  const jwt = getLocalStorage("jwt");
+  const url =JSON.parse(jwt).avatar.url
+  const id =JSON.parse(jwt)._id;
   const options = [
     { icon: <ListAltIcon />, name: "Orders", func: orders },
     { icon: <PersonIcon />, name: "Profile", func: account },
     {
       icon: (
         <ShoppingCartIcon
-         // style={{ color: cartItems.length > 0 ? "tomato" : "unset" }}
+         style={{ color: cartItems.length > 0 ? "tomato" : "unset" }}
         />
       ),
-      //name: `Cart(${cartItems.length})`,
+      name: `Cart(${cartItems.length})`,
       func: cart,
     },
     { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
@@ -74,7 +77,7 @@ const UserOption = () => {
       icon={
         <img
           className="speedDialIcon"
-          src={"/profile"}
+          src={url}
           alt="Profile"
         />
       }
@@ -82,9 +85,11 @@ const UserOption = () => {
       {options.map((item) => (
         <SpeedDialAction
           
-          icon={item.icon}
-          tooltipTitle={item.name}
-          onClick={item.func}
+        key={item.name}
+        icon={item.icon}
+        tooltipTitle={item.name}
+        onClick={item.func}
+        tooltipOpen={window.innerWidth <= 600 ? true : false}
           
         />
       ))}

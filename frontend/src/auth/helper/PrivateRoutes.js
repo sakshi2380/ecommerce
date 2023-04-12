@@ -1,18 +1,19 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+
+import React, { Fragment } from "react";
+import {  Outlet, Navigate } from "react-router-dom";
 import { isAutheticated } from "./index";
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
+const PrivateRoute = ({ element: Element, ...rest }) => {
   return (
-    <Route
+    <Outlet
       {...rest}
       render={props =>
         isAutheticated() ? (
-          <Component {...props} />
+          <Element {...props} />
         ) : (
-          <Redirect
+          <Navigate
             to={{
-              pathname: "/signin",
+              pathname: "/login",
               state: { from: props.location }
             }}
           />

@@ -1,4 +1,5 @@
-import { API } from "../../backend";
+import { API,Local_API, UPDATEPASS } from "../../backend";
+import { toast } from "react-toastify";
 
 export const signup = user => {
   return fetch(`${API}/signup`, {
@@ -14,11 +15,11 @@ export const signup = user => {
       return response.json();
     })
     .catch(err => console.log(err));
-    console.log(JSON.stringify("2: "+user));
+    //console.log(JSON.stringify("2: "+user));
 };
 
 export const signin = user => {
-  return fetch(`${API}/signin`, {
+  return fetch(`${API}/login`, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -61,4 +62,73 @@ export const isAutheticated = () => {
   } else {
     return false;
   }
+};
+export const postWithoutToken = (url, values) => {
+  return fetch(`${API}${url}` , {
+    method: "POST",
+    body: JSON.stringify(values),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then(function (response) {
+      return response.json();
+    })
+     .catch((error) => toast.error(error?.response));
+};
+export const setLocalStorage = (key, data) => {
+  localStorage.setItem(key, JSON.stringify(data));
+};
+export const getLocalStorage = (key) => {
+  return localStorage.getItem(key);
+};
+export const clearLocalStorage = () => {
+  return localStorage.clear();
+};
+export const updateProfile = (userId,token,user) => {
+  console.log(user,'user');
+  return fetch(`${API}/profileupdate/${userId}`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization:`Bearer ${token}`
+    },
+  })
+    .then(response => {
+      return response.json();
+    })
+    .catch(err => console.log(err));
+};
+export const createReview = (userId,username,token,review) => {
+
+  return fetch(`${API}/review/${userId}/${username}`, {
+    method: "PUT",
+    body: JSON.stringify(review),
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization:`Bearer ${token}`
+    },
+  })
+    .then(response => {
+      return response.json();
+    })
+    .catch(err => console.log(err));
+};
+export const putWithoutToken = (url,id,token,values) => {
+  return fetch(`${API}/${url}/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(values),
+    headers: {
+      Accept: "application/js on",
+      "Content-Type": "application/json",
+      Authorization:`Bearer ${token}`
+    },
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .catch((error) => toast.error(error?.response));
 };
