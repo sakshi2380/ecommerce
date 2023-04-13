@@ -32,7 +32,7 @@ import {
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post("http://127.0.0.1:4000/api/order/new", order, config);
+      const { data } = await axios.post("http://localhost:4000/api/order/new/", order, config);
   
       dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
     } catch (error) {

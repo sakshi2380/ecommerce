@@ -12,7 +12,7 @@ import ProductDetails from "./component/Product/ProductDetails";
 import Products from "./component/Product/Products";
 import Search from "./component/Product/Search";
 import SignUp from "./component/User/SignUp";
-
+import { useDispatch, useSelector } from "react-redux";
 import UserOption from "./component/layout/Header/UserOption";
 import Profile from "./component/User/Profile";
 import UpdateProfile from "./component/User/UpdateProfile";
@@ -28,7 +28,10 @@ import ConfirmOrder from "./component/Cart/ConfirmOrder"
 import Payment from "./component/Cart/Payment";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import LoginSignUp from "./component/User/LoginSignUp";
+import store from "./store";
 function App() {
+  const { isAuthenticated, user } = useSelector((state) => state.user);
   const [stripeApiKey, setStripeApiKey] = useState("");
 
   async function getStripeApiKey() {
@@ -43,8 +46,10 @@ function App() {
         families: ["Roboto", "Droid Sans", "Chilanka"],
       },
     });
+    // store.dispatch(loadUser());
     getStripeApiKey();
   }, []);
+  window.addEventListener("contextmenu", (e) => e.preventDefault());
   return (
     <Router>
       <Header />
@@ -57,8 +62,9 @@ function App() {
         <Route exact path="/search" element={<Search />} />
         <Route exact path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/loginSignup" element={<LoginSignUp />} />
         
-        <Route exact path="/password/forgot" element={<ForgotPassword />} />
+        <Route exact path="/api/password/forgot" element={<ForgotPassword />} />
         <Route exact path="/password/reset/:token" element={<ResetPassword />}/>
         <Route path="/" element={<PrivateRoute />}>
           <Route exact path="/account" element={<Profile />} />
@@ -68,9 +74,10 @@ function App() {
           <Route exact path="/useroption" element={<UserOption />} />
           <Route exact path="/shipping" element={<Shipping />} />
           <Route exact path="/order/confirm" element={<ConfirmOrder />} />
-          {/* <Route exact path="/process/payment"  element={<Payment />}  /> */}
+          <Route exact path="/process/payment"  element={<Payment />}  />
 
           
+
         </Route>
         {/* {stripeApiKey && (
         <Route path="/process/payment"
@@ -83,10 +90,9 @@ function App() {
         }/>
         )}
         {console.log(stripeApiKey)} */}
-      </Routes>
-        {/* <Elements stripe={loadStripe(stripeApiKey)}>
         <Route exact path="/process/payment"  element={<Payment />} />
-        </Elements> */}
+      </Routes>
+        
       <Footer />
     </Router>
   );

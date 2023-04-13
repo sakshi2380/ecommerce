@@ -1,166 +1,97 @@
-import React, { useState } from "react";
-import { validatePassword, validcPassword } from "../../utils/validations";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { putWithoutToken } from "../../auth/helper";
-import { toast } from "react-toastify";
-import profilePng from "../../../src/images/12.png";
-
-const DefaultValues = {
-  password: "",
-  cpassword: "",
-};
-
+import React, { Fragment, useState, useEffect } from "react";
+import "./ResetPassword.css";
+import Loader from "../layout/Loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrors, resetPassword } from "../../actions/userAction";
+import { useAlert } from "react-alert";
+import MetaData from "../layout/MetaData";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
+import LockIcon from "@material-ui/icons/Lock";
+import { Link, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const ResetPassword = () => {
-  const [showPwd, setShowPwd] = useState(false);
-  const [showPwd1, setShowPwd1] = useState(false);
-  const [values, setValues] = useState(DefaultValues);
-  const [errors, setErrors] = useState({
-    password: "",
-    cpassword: "",
-  });
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  const history = useNavigate()
+  const token = useParams()
 
-  const { password, confirm_password } = values;
-  const uid = window.location.href.split("/")[4];
-  console.log(uid, "uid");
+  const { error, success, loading } = useSelector(
+    (state) => state.forgotPassword
+  );
 
-  const token = window.location.href.split("/")[5];
-  console.log(token, "token");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-
-    if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: "" });
-    }
-  };
-
-  const validate = () => {
-    let tempErrors = { ...errors };
-    let valid = true;
-
-    const pwdError = validatePassword(values.password);
-    const cpwdError = validcPassword(values);
-    console.log(cpwdError, "values.cpassword");
-
-    if (pwdError) {
-      tempErrors = { ...tempErrors, password: pwdError };
-      valid = false;
-    }
-    if (cpwdError) {
-      tempErrors = { ...tempErrors, cpassword: cpwdError };
-      valid = false;
-    }
-    setErrors(tempErrors);
-    return valid;
-  };
-
-  const onSubmit = (e) => {
+  const resetPasswordSubmit = (e) => {
     e.preventDefault();
-    if (!validate()) {
-      return false;
-    }
-    console.log(token,"vuhuhg");
 
-    let payload = {
-      //  token: token,
-      password: values.password,
-      confirmPassword: values.cpassword,
-    };
-    putWithoutToken(`password/reset`,token, payload)
-      .then((response) => {
-        console.log(response, "rrr");
-      })
-      .catch((error) => {
-        toast.error("Something went wrong");
-      });
+    const myForm = new FormData();
+
+    myForm.set("password", password);
+    myForm.set("confirmPassword", confirmPassword);
+
+    dispatch(resetPassword(token, myForm));
   };
-  return (
-    <>
-      <section className="calcc bg-white">
-        <div className="container py-5 h-100">
-          <div className="row align-items-center justify-content-center  hvh-80 ">
-            <div className="col-md-8 col-lg-7 col-xl-6 text-center">
-              <img src={profilePng} className="img-fluid" alt="image" />
-            </div>
-            <div className="col-md-7 col-lg-5 col-xl-5">
-              <div className="mb-3 text-primary">
-                <h3>Reset Password</h3>
-              </div>
-              <form onSubmit={onSubmit}>
-                <div className="form-outline mb-3">
-                  <label className="form-label" htmlFor="form1Example23">
-                    Password
-                  </label>
-                  <div className="input-group mb-3">
-                    <input
-                      type={showPwd ? "text" : "password"}
-                      name="password"
-                      id="form1Example23"
-                      onChange={handleChange}
-                      placeholder="**********"
-                      value={values.password}
-                      error={errors.password}
-                      className="form-control form-control-lg"
-                    />
-                    <button
-                      className="btn btn-show-eye"
-                      type="button"
-                      onClick={() => setShowPwd(!showPwd)}
-                    >
-                      {!showPwd ? <AiFillEye /> : <AiFillEyeInvisible />}
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <p className="text-danger insta-smart-error">
-                      {errors.password}
-                    </p>
-                  )}
-                </div>
-                <div className="form-outline mb-3">
-                  <label className="form-label" htmlFor="form1Example23">
-                    Confirm Password
-                  </label>
-                  <div class="input-group mb-3">
-                    <input
-                      type={showPwd1 ? "text" : "password"}
-                      name="cpassword"
-                      id="form1Example23"
-                      onChange={handleChange}
-                      placeholder="**********"
-                      value={values.cpassword}
-                      error={errors.cpassword}
-                      className="form-control form-control-lg"
-                    />
-                    <button
-                      className="btn btn-show-eye"
-                      type="button"
-                      onClick={() => setShowPwd1(!showPwd1)}
-                    >
-                      {!showPwd1 ? <AiFillEye /> : <AiFillEyeInvisible />}
-                    </button>
-                  </div>
-                  {errors.cpassword && (
-                    <p className="text-danger insta-smart-error">
-                      {errors.cpassword}
-                    </p>
-                  )}
-                </div>
 
-                <div className="h-45 d-grid ">
-                  <button
-                    type="submit"
-                    className="btn btn-outline-primary btn-sm btn-block c-btn "
-                  >
-                    Submit
-                  </button>
-                </div>
-              </form>
-            </div>
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (success) {
+      alert.success("Password Updated Successfully");
+
+      history("/login");
+    }
+  }, [dispatch, error, alert, history, success]);
+  return (
+    <Fragment>
+    {loading ? (
+      <Loader />
+    ) : (
+      <Fragment>
+        <MetaData title="Change Password" />
+        <div className="resetPasswordContainer">
+          <div className="resetPasswordBox">
+            <h2 className="resetPasswordHeading">Update Profile</h2>
+
+            <form
+              className="resetPasswordForm"
+              onSubmit={resetPasswordSubmit}
+            >
+              <div>
+                <LockOpenIcon />
+                <input
+                  type="password"
+                  placeholder="New Password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <div className="loginPassword">
+                <LockIcon />
+                <input
+                  type="password"
+                  placeholder="Confirm Password"
+                  required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                />
+              </div>
+              <input
+                type="submit"
+                value="Update"
+                className="resetPasswordBtn"
+              />
+            </form>
           </div>
         </div>
-      </section>
-    </>
-  );
-};
+      </Fragment>
+    )}
+  </Fragment>
+  )
+}
 
-export default ResetPassword;
+export default ResetPassword

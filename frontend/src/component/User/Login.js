@@ -61,7 +61,7 @@ const Login = () => {
       .then((response) => {
         console.log(response);
         // toast.success("Sucess");
-      //  setLocalStorage("token",response.token)
+       setLocalStorage("token",response.token)
         authenticate(response,()=>{
           console.log("login");
         })
