@@ -2,18 +2,23 @@ import React, { Fragment, useState, useEffect } from "react";
 import "./ResetPassword.css";
 import Loader from "../layout/Loader/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, resetPassword } from "../../actions/userAction";
+import { clearErrors, login, resetPassword } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import LockIcon from "@material-ui/icons/Lock";
-import { Link, useNavigate } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+// import { useLocation,useParams } from "react-router-dom";
 const ResetPassword = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const history = useNavigate()
-  const token = useParams()
+  // const {token} = useParams()
+
+  const data = window.location.href.split('=')
+const token = data[1]
+console.log(token);
+  
 
   const { error, success, loading } = useSelector(
     (state) => state.forgotPassword

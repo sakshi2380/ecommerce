@@ -1,87 +1,45 @@
-
-import { useSelector} from "react-redux";
+import React, { Fragment, useEffect } from "react";
+import { useSelector } from "react-redux";
 import MetaData from "../layout/MetaData";
 import Loader from "../layout/Loader/Loader";
 import { Link } from "react-router-dom";
 import "./Profile.css";
-import profilePng from "../../images/Profile.png";
-import React, { Fragment, useRef, useState,useEffect } from "react";
-import { isAutheticated,setLocalStorage, getLocalStorage, authenticate } from "../../auth/helper";
-// const loadCart = () => {
+import { useNavigate } from "react-router-dom";
 
-//   if(typeof window != undefined)
-//   {
-//       if(localStorage.getItem("jwt"))
-//       {
-//           console.log("vdighvidhv",JSON.parse(localStorage.getItem("jwt"))); 
-//       }
-
-//   }
-// }
-// loadCart()
 const Profile = () => {
-  
-  
+  const history = useNavigate()
+  const { user, loading, isAuthenticated } = useSelector((state) => state.user);
 
-  
- 
-  const jwt = getLocalStorage("jwt");
-  const url =JSON.parse(jwt).avatar.url
-  console.log(url);
-  const { name,email,createdAt } =JSON.parse(localStorage.getItem("jwt"));
-//   const update = (e) => {
-//     e.preventDefault();
-//     axios.get("http://localhost:4000/api/me",).then((response,err)=>{
-//       if(err){
-//         console.log(response);
-//       }
-//       else{
-//         // localStorage.setItem("token", response?.data?.token);
-//         authenticate(response?.data,()=>{
-//           console.log("sign in");
-//           navigate("/products");
-//         })
-//       }
-//     })
-//   };
-
-  return (<>
-  
-  
-  
-            
-        
-
-  
-
-    
+  useEffect(() => {
+    if (isAuthenticated === false) {
+      history("/login");
+    }
+  }, [history, isAuthenticated]);
+  return (
     <Fragment>
-     
-      {/* {loading ? (
+      {loading ? (
         <Loader />
       ) : (
-        <Fragment> */}
-          <MetaData title={`User's Profile`} />
-         
+        <Fragment>
+          <MetaData title={`${user.name}'s Profile`} />
           <div className="profileContainer">
             <div>
               <h1>My Profile</h1>
-              <img src={url} alt={"name"} />
-              <Link to="/me/update" >Edit Profile</Link>
+              <img src={user.avatar.url} alt={user.name} />
+              <Link to="/me/update">Edit Profile</Link>
             </div>
             <div>
               <div>
-                <h4>User</h4>
-                <p>{name}</p>
+                <h4>Full Name</h4>
+                <p>{user.name}</p>
               </div>
               <div>
                 <h4>Email</h4>
-                <p>{email}</p>
+                <p>{user.email}</p>
               </div>
               <div>
                 <h4>Joined On</h4>
-                {/* <p>{String(user.createdAt).substr(0, 10)}</p> */}
-                <p>{String(createdAt.substr(0, 10))}</p>
+                <p>{String(user.createdAt).substr(0, 10)}</p>
               </div>
 
               <div>
@@ -91,10 +49,9 @@ const Profile = () => {
             </div>
           </div>
         </Fragment>
-      {/* )}
-    </Fragment> */}
-    </>
-  );
-};
+      )}
+    </Fragment>
+  )
+}
 
-export default Profile;
+export default Profile

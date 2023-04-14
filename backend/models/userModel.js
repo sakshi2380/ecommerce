@@ -26,11 +26,11 @@ const userSchema = new mongoose.Schema({
   avatar: {
     public_id: {
       type: String,
-      required: true,
+      default: "sample url",
     },
     url: {
       type: String,
-      required: true,
+      default:"https://raw.githubusercontent.com/meabhisingh/mernProjectEcommerce/master/frontend/src/images/Profile.png"
     },
   },
   role: {

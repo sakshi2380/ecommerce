@@ -13,9 +13,11 @@ const LoginSignUp = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const history = useNavigate()
-  const { error, loading, isAuthenticated } = useSelector(
+  const { error, loading, isAuthenticated ,} = useSelector(
     (state) => state.user
   );
+  console.log(isAuthenticated);
+  // console.log(user);
   const loginTab = useRef(null);
   const registerTab = useRef(null);
   const switcherTab = useRef(null);
@@ -31,8 +33,8 @@ const LoginSignUp = () => {
 
   const { name, email, password } = user;
 
-  // const [avatar, setAvatar] = useState("/Profile.png");
-  // const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
+  const [avatar, setAvatar] = useState();
+  const [avatarPreview, setAvatarPreview] = useState()
 
   const loginSubmit = (e) => {
     e.preventDefault();
@@ -112,6 +114,7 @@ const LoginSignUp = () => {
                   onChange={(e) => setLoginEmail(e.target.value)}
                 />
               </div>
+              <div></div>
               <div className="loginPassword">
                 <LockOpenIcon />
                 <input
@@ -165,15 +168,6 @@ const LoginSignUp = () => {
                 />
               </div>
 
-              {/* <div id="registerImage">
-                <img src={avatarPreview} alt="Avatar Preview" />
-                <input
-                  type="file"
-                  name="avatar"
-                  accept="image/*"
-                  onChange={registerDataChange}
-                />
-              </div> */}
               <input type="submit" value="Register" className="signUpBtn" />
             </form>
           </div>

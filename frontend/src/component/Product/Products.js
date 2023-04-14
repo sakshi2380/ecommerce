@@ -72,7 +72,7 @@ console.log(products,'ffff');
           <Loader />
         ) : (
           <Fragment>
-            <UserOption/>
+            {/* <UserOption/> */}
             <MetaData title="PRODUCTS -- Trendskart" />
             <h2 className="productsHeading">Products</h2>
   

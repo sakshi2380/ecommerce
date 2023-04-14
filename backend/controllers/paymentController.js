@@ -5,8 +5,8 @@ dotenv.config({path:"C:/Users/prati/OneDrive/Desktop/Javascript/internship/Proje
 
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-console.log(process.env.STRIPE_SECRET_KEY);
-console.log(process.env.STRIPE_API_KEY);
+
+
 exports.processPayment = catchAsyncErrors(async (req, res, next) => {
   const myPayment = await stripe.paymentIntents.create({
     amount: req.body.amount,

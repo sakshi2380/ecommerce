@@ -4,66 +4,66 @@ const User = require("../models/userModel");
 const dotenv = require("dotenv");
 const sendToken = require("../utils/jwtToken");
 
-dotenv.config({path:"C:/Users/prati/OneDrive/Desktop/Javascript/internship/Project1/backend/config/config.env"})
-const sendEmail = require("../utils/sendEmail")
+dotenv.config({
+  path: "C:/Users/prati/OneDrive/Desktop/Javascript/internship/Project1/backend/config/config.env",
+});
+const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
   // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
   //   folder: "avatars",
-  //   width: 150,
-  //   crop: "scale",
+  //   width: 100,
+  // height: 150,
+  // Crop: 'fill',
   // });
+  // console.log(myCloud);
 
-const {name,email,password} = req.body;
-const user = await User.create({
-    name,email,password,
-    avatar:{
-      public_id: "sample url",
-      url: "https://raw.githubusercontent.com/meabhisingh/mernProjectEcommerce/master/frontend/src/images/Profile.png",
-    }
-})
-sendToken(user,201,res)
-
+  const { name, email, password } = req.body;
+  const user = await User.create({
+    name,
+    email,
+    password,
+  });
+  sendToken(user, 201, res);
 });
 // Login User
 exports.loginUser = catchAsyncErrors(async (req, res, next) => {
-    const { email, password } = req.body;
-  
-    // checking if user has given password and email both
-  
-    if (!email || !password) {
-      return next(new ErrorHander("Please Enter Email & Password", 400));
-    }
-  
-    const user = await User.findOne({ email }).select("+password");
-  
-    if (!user) {
-      return next(new ErrorHander("Invalid email or password", 401));
-    }
-    const isPasswordMatched = await user.comparePassword(password);
+  const { email, password } = req.body;
+
+  // checking if user has given password and email both
+
+  if (!email || !password) {
+    return next(new ErrorHander("Please Enter Email & Password", 400));
+  }
+
+  const user = await User.findOne({ email }).select("+password");
+
+  if (!user) {
+    return next(new ErrorHander("Invalid email or password", 401));
+  }
+  const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
     return next(new ErrorHander("Invalid email or password", 401));
   }
-  sendToken(user,200,res)
-
-})
+  sendToken(user, 200, res);
+});
 // Logout User
 exports.logout = catchAsyncErrors(async (req, res, next) => {
-    res.cookie("token", null, {
-      expires: new Date(Date.now()),
-      httpOnly: true,
-    });
-  
-    res.status(200).json({
-      success: true,
-      message: "Logged Out",
-    });
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
   });
-  
+
+  res.status(200).json({
+    success: true,
+    message: "Logged Out",
+  });
+});
+
 // Forgot Password
 exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
@@ -79,7 +79,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
   const resetPasswordUrl = `${req.protocol}://${req.get(
     "host"
-  )}/password/reset/${resetToken}`;
+  )}/password?token=${resetToken}`;
 
   const message = `Your password reset token is :- \n\n ${resetPasswordUrl} \n\nIf you have not requested this email then, please ignore it.`;
 
@@ -94,7 +94,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
       success: true,
       message: `Email sent to ${user.email} successfully`,
       resetToken,
-      status:200
+      status: 200,
     });
   } catch (error) {
     user.resetPasswordToken = undefined;
@@ -105,10 +105,8 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHander(error.message, 500));
   }
 });
-  // Reset Password
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
-  
-  
+  // creating token hash
   const resetPasswordToken = crypto
     .createHash("sha256")
     .update(req.params.token)
@@ -140,8 +138,28 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   sendToken(user, 200, res);
 });
-  
-//get user details
+
+exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+
+  const users = await User.findById(req.user.id);
+
+  // const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+  //   new: true,
+  //   runValidators: true,
+  //   useFindAndModify: false,
+  // });
+
+  res.status(200).json({
+    success: true,
+    users,
+    
+  });
+});
+// Get User Detail
 exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
@@ -151,9 +169,11 @@ exports.getUserDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+
+
 // update User password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.params.id).select("+password");
+  const user = await User.findById(req.user.id).select("+password");
 
   const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
@@ -172,23 +192,6 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   sendToken(user, 200, res);
 });
 
-exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
-
-  const newUserData = {
-    name: req.body.name,
-    email: req.body.email,
-    
-
-  };
- 
-  const user = await User.findByIdAndUpdate(req.params.id, newUserData, {
-    new: true,
-    runValidators: true,
-    useFindAndModify: false,
-  });
-
-  sendToken(user,200,res)
-});
 
 // Get all users(admin)
 exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
@@ -202,9 +205,9 @@ exports.getAllUser = catchAsyncErrors(async (req, res, next) => {
 
 //get single user
 exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
-  const users = await User.findById(req.params.id)
+  const users = await User.findById(req.params.id);
 
-  if (!users){
+  if (!users) {
     return next(
       new ErrorHander(`User does not exist with Id: ${req.params.id}`)
     );
@@ -222,7 +225,6 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     role: req.body.role,
-    
   };
 
   await User.findByIdAndUpdate(req.params.id, newUserData, {
@@ -237,17 +239,19 @@ exports.updateUserRole = catchAsyncErrors(async (req, res, next) => {
 });
 exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
   try {
-    const{id} = req.params
-    const user = await User.findByIdAndDelete(id)
+    const { id } = req.params;
+    const user = await User.findByIdAndDelete(id);
     if (!user) {
-        return next(new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400));
-      }
-  res.status(200).json({
-  success: true,
-  message: "User Deleted Successfully",
-  });
+      return next(
+        new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400)
+      );
+    }
+    res.status(200).json({
+      success: true,
+      message: "User Deleted Successfully",
+    });
   } catch (error) {
     console.log(error.message);
-    res.status(500).json({message: error.message}) 
+    res.status(500).json({ message: error.message });
   }
 });

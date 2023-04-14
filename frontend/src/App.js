@@ -30,10 +30,17 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import LoginSignUp from "./component/User/LoginSignUp";
 import store from "./store";
+import ProtectedRoute from "./component/Route/ProtectedRoute";
+import { loadUser } from "./actions/userAction";
+import UserOptions from "./component/layout/Header/UserOption"
+
+
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  console.log(isAuthenticated);
   const [stripeApiKey, setStripeApiKey] = useState("");
-
+  
+  const [keyword, setKeyword] = useState("");
   async function getStripeApiKey() {
     const { data } = await axios.get("http://localhost:4000/api/stripeapikey");
 
@@ -46,27 +53,29 @@ function App() {
         families: ["Roboto", "Droid Sans", "Chilanka"],
       },
     });
-    // store.dispatch(loadUser());
+    store.dispatch(loadUser());
     getStripeApiKey();
   }, []);
   window.addEventListener("contextmenu", (e) => e.preventDefault());
   return (
     <Router>
       <Header />
-
+      {isAuthenticated && <UserOptions user={user} />}
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path="/product/:id" element={<ProductDetails />} />
         <Route exact path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
         <Route exact path="/search" element={<Search />} />
-        <Route exact path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/loginSignup" element={<LoginSignUp />} />
+        <Route exact path="/login" element={<LoginSignUp />} />
+        {/* <Route path="/signup" element={<SignUp />} /> */}
+        {/* <Route path="/loginSignup" element={<LoginSignUp />} /> */}
         
-        <Route exact path="/api/password/forgot" element={<ForgotPassword />} />
-        <Route exact path="/password/reset/:token" element={<ResetPassword />}/>
-        <Route path="/" element={<PrivateRoute />}>
+        <Route exact path="/password/forgot" element={<ForgotPassword />} />
+        <Route exact path="/password"element={<ResetPassword />}/>
+
+        
+        <Route path="/" element={<ProtectedRoute />}>
           <Route exact path="/account" element={<Profile />} />
           <Route exact path="/me/update" element={<UpdateProfile />} />
           <Route exact path="/password/update" element={<UpdatePasssword />} />
@@ -74,7 +83,8 @@ function App() {
           <Route exact path="/useroption" element={<UserOption />} />
           <Route exact path="/shipping" element={<Shipping />} />
           <Route exact path="/order/confirm" element={<ConfirmOrder />} />
-          <Route exact path="/process/payment"  element={<Payment />}  />
+          {/* <Route exact path="/process/payment"  element={<Payment />}  /> */}
+          <Route exact path="/process/payment"  element={<Payment />} />
 
           
 

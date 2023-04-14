@@ -1,87 +1,76 @@
 import React, { Fragment, useState, useEffect } from "react";
-import axios from "axios";
 import "./UpdateProfile.css";
-
 import Loader from "../layout/Loader/Loader";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import FaceIcon from "@material-ui/icons/Face";
 import { useDispatch, useSelector } from "react-redux";
-import { clearErrors, loadUser } from "../../actions/userAction";
+import { clearErrors, updateProfile, loadUser } from "../../actions/userAction";
 import { useAlert } from "react-alert";
-import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 import MetaData from "../layout/MetaData";
-import { putWithoutToken,setLocalStorage, getLocalStorage, authenticate } from "../../auth/helper";
-import { updateProfile } from "../../auth/helper";
-import { toast } from "react-toastify";
-import { Link, useNavigate } from "react-router-dom";
+import { UPDATE_PROFILE_RESET } from "../../constants/userConstants";
 
+import { useNavigate } from "react-router-dom";
 
-const UpdateProfile = ({  }) => {
+const UpdateProfile = () => {
+  const dispatch = useDispatch();
+  const alert = useAlert();
+  const history = useNavigate();
 
+  const { user } = useSelector((state) => state.user);
+  const { error, isUpdated, loading } = useSelector((state) => state.profile);
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState();
-  const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
-
-
-  const dispatch = useDispatch();
-  const alert = useAlert();
-  
-  
-  
-
-  const token = getLocalStorage("token");
-  const [userToken, setUserToken] = useState('')
-  const jwt = getLocalStorage("jwt");
-  console.log(JSON.parse(jwt)._id,'12');
-  const id =JSON.parse(jwt)._id;
-  const { loading } = useSelector((state) => state.productDetails);
-
-
-  console.log(email,'email',name,'name');
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setUserToken(JSON.parse(token))
-  },[])
-  const obj ={
-    email:email,
-    name:name
-  }
-
+  // const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
   const updateProfileSubmit = (e) => {
     e.preventDefault();
-    
-    putWithoutToken("/profileupdate",id,userToken, obj)
-      .then((response) => {
-        console.log(response, "123");
 
-        // if (response.success == true) {
-          
-           toast.success("Sucess");
-          setLocalStorage("token",response.token)
-          authenticate(response?.user,()=>{
-            console.log("login");
-            navigate("/account")
-          })
-           
-        // } 
-       
-      })
-      .catch((response) => {
-        toast.error("Something went wrong");
-      });
-      
+    const myForm = new FormData();
+
+    myForm.set("name", name);
+    myForm.set("email", email);
+    // myForm.set("avatar", avatar);
+    dispatch(updateProfile(myForm));
   };
 
-  // if (update) {
-  //   alert.success("Profile Updated Successfully");
-  //   //dispatch(loadUser());
+  // const updateProfileDataChange = (e) => {
+  //   const reader = new FileReader();
 
-  //   history.push("/account");
-  // }
+  //   reader.onload = () => {
+  //     if (reader.readyState === 2) {
+  //       setAvatarPreview(reader.result);
+  //       setAvatar(reader.result);
+  //     }
+  //   };
+
+  //   reader.readAsDataURL(e.target.files[0]);
+  // };
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+      // setAvatarPreview(user.avatar.url);
+    }
+
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+
+    if (isUpdated) {
+      alert.success("Profile Updated Successfully");
+      dispatch(loadUser());
+
+      history("/account");
+
+      dispatch({
+        type: UPDATE_PROFILE_RESET,
+      });
+    }
+  }, [dispatch, error, alert, history, user, isUpdated]);
   return (
     <Fragment>
       {loading ? (
@@ -96,7 +85,7 @@ const UpdateProfile = ({  }) => {
               <form
                 className="updateProfileForm"
                 encType="multipart/form-data"
-                 onSubmit={updateProfileSubmit}
+                onSubmit={updateProfileSubmit}
               >
                 <div className="updateProfileName">
                   <FaceIcon />
@@ -121,22 +110,20 @@ const UpdateProfile = ({  }) => {
                   />
                 </div>
 
-                <div id="updateProfileImage">
-                  {/* <img src={avatarPreview} alt="Avatar Preview" />
+                {/* <div id="updateProfileImage">
+                  <img src={avatarPreview} alt="Avatar Preview" />
                   <input
                     type="file"
                     name="avatar"
                     accept="image/*"
-                    //onChange={updateProfileDataChange}
-                  /> */}
-                </div>
+                    onChange={updateProfileDataChange}
+                  />
+                </div> */}
                 <input
                   type="submit"
                   value="Update"
                   className="updateProfileBtn"
                 />
-              
-                  
               </form>
             </div>
           </div>
