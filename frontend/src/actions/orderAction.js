@@ -32,7 +32,7 @@ import {
           "Content-Type": "application/json",
         },
       };
-      const { data } = await axios.post("http://localhost:4000/api/order/new/", order, config);
+      const { data } = await axios.post("http://localhost:4000/api/order/new", order, config);
   
       dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
     } catch (error) {
@@ -46,4 +46,21 @@ import {
   // Clearing Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
+};
+
+
+// My Orders
+export const myOrders = () => async (dispatch) => {
+  try {
+    dispatch({ type: MY_ORDERS_REQUEST });
+
+    const { data } = await axios.get("http://localhost:4000/api/orders/me");
+
+    dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
+  } catch (error) {
+    dispatch({
+      type: MY_ORDERS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
 };

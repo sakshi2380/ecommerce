@@ -24,6 +24,8 @@ import EventIcon from "@material-ui/icons/Event";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import { createOrder, clearErrors } from "../../actions/orderAction";
 import { isAutheticated } from "../../auth/helper";
+import { loadUser } from "../../actions/userAction";
+import store from "../../store";
 
 
 const Payment = () => {
@@ -42,6 +44,7 @@ const PaymentForm = ()=>{
   const {name,email} = isAutheticated()
   const payBtn = useRef(null);
   const navigate = useNavigate();
+  
   
   const dispatch = useDispatch();
   const alert = useAlert();
@@ -127,6 +130,7 @@ const PaymentForm = ()=>{
       alert.error(error);
       dispatch(clearErrors());
     }
+    
   }, [dispatch, error, alert]);
   
   return (

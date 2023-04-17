@@ -19,7 +19,7 @@ const item = {
 const Cart = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0MzZkOTMxYzYwMTg5MGQ1YWQ1NzA0NiIsImlhdCI6MTY4MTcyOTczMCwiZXhwIjoxNjgyMTYxNzMwfQ.SE8G9G9YWiuxMwuS7NWZy-iaBudmVikVBF7lM_VSq7Q";
   const { cartItems } = useSelector((state) => state.cart);
   const increaseQuantity = (id, quantity, stock) => {
     const newQty = quantity + 1;
@@ -34,7 +34,7 @@ const Cart = () => {
     if (1 >= quantity) {
       return;
     }
-    dispatch(addItemsToCart(id, newQty));
+    dispatch(addItemsToCart(id, newQty,token));
   };
 
   const deleteCartItems = (id) => {

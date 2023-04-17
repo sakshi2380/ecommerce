@@ -10,11 +10,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 const ConfirmOrder = () => {
     const { shippingInfo, cartItems } = useSelector((state) => state.cart);
-    const {
-        name,
-        email,
-        _id
-      } = isAutheticated();
+    const { user } = useSelector((state) => state.user);
+    console.log(user);
       const navigate = useNavigate();
       const subtotal = cartItems.reduce(
         (acc, item) => acc + item.quantity * item.price,
@@ -52,7 +49,7 @@ const ConfirmOrder = () => {
             <div className="confirmshippingAreaBox">
               <div>
                 <p>Name:</p>
-                <span>{name}</span>
+                <span>{user.name}</span>
               </div>
               <div>
                 <p>Phone:</p>

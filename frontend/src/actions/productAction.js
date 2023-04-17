@@ -42,8 +42,9 @@ export const getProduct =
       let link = `${BASE_URL}/product?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`
       
       if (category) {
-        link = `${BASE_URL}/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+        link = `http://localhost:4000/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
       }
+
     const { data } = await axios.get(link);
 console.log("DAtaa:", data)
       dispatch({
@@ -89,7 +90,7 @@ export const newReview = (reviewData) => async (dispatch) => {
       headers: { "Content-Type": "application/json" },
     };
 
-    const { data } = await axios.put(`${BASE_URL}/api/review`, reviewData, config);
+    const { data } = await axios.put(`http://localhost:4000/api/review`, reviewData, config);
 
     dispatch({
       type: NEW_REVIEW_SUCCESS,

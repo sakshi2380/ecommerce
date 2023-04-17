@@ -15,13 +15,13 @@ import Pagination from "react-js-pagination";
 import UserOption from "../layout/Header/UserOption";
 
 const categories = [
-    "Laptop",
-    "Footwear",
-    "Bottom",
-    "Tops",
-    "Attire",
-    "Camera",
-    "phone",
+    "men's clothing",
+    "jewelery",
+    "electronics",
+    "women's clothing",
+    "Kids",
+    "Bags & Footwear",
+    "Beauty & Health",
   ];
 
 const Products = ({match}) => {
@@ -44,7 +44,7 @@ const Products = ({match}) => {
       resultPerPage,
       filteredProductsCount,
     } = useSelector((state) => state.products);
-console.log(products,'ffff');
+
     const { keyword } = useParams()
     const setCurrentPageNo = (e) => {
         setCurrentPage(e);
@@ -53,7 +53,7 @@ console.log(products,'ffff');
       const priceHandler = (event, newPrice) => {
         setPrice(newPrice);
       };
-     
+      let count = filteredProductsCount;
     
       useEffect(() => {
         if (error) {
@@ -63,7 +63,7 @@ console.log(products,'ffff');
     
         dispatch(getProduct(keyword, currentPage, price,category,ratings));
       }, [dispatch, keyword, currentPage, price,category,ratings,alert, error]);
-      let count = filteredProductsCount;
+    
       console.log(count);
     return (
         <Fragment>
@@ -92,7 +92,7 @@ console.log(products,'ffff');
               min={0}
               max={25000}
             />
-             <Typography>Categories</Typography>
+            <Typography>Categories</Typography>
             <ul className="categoryBox">
               {categories.map((category) => (
                 <li

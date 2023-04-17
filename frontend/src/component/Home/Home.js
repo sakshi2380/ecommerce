@@ -29,6 +29,8 @@ const Home = () => {
     }
     dispatch(getProduct());
   }, [dispatch, error]);
+
+  // console.log('local--->',localStorage.getItem('token'));
   return (
     <Fragment>
       {loading ? (

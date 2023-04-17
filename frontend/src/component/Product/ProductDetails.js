@@ -16,6 +16,7 @@ import MetaData from "../layout/MetaData";
 import { isAutheticated ,getLocalStorage} from "../../auth/helper";
 import { Navigate, useParams } from 'react-router-dom';
 import { addItemsToCart } from "../../actions/cartAction";
+import { NEW_REVIEW_RESET } from "../../constants/productConstants"
 import {
   Dialog,
   DialogActions,
@@ -37,71 +38,9 @@ const ProductDetails = ({ match }) => {
   const { product, loading, error } = useSelector(
     (state) => state.productDetails
   );
-  // const { success, error: reviewError } = useSelector(
-  //   (state) => state.newReview
-  // );
-  const [redirect, setRedirect] = useState(false);
-  const [quantity, setQuantity] = useState(1);
-  const [open, setOpen] = useState(false);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
-
-console.log(product.Stock);
-console.log(quantity,"nfurg");
-  const increaseQuantity = () => {
-    if (product.Stock <= quantity) return;
-  const qty = quantity + 1;
-  
-    setQuantity(qty);
-  };
-  console.log(quantity,"nvhdhhgyrg");
-
-  const decreaseQuantity = () => {
-    if (1 >= quantity) return;
-
-    const qty = quantity - 1;
-    setQuantity(qty);
-  };
-  const submitReviewToggle = () => {
-    open ? setOpen(false) : setOpen(true);
-  };
-  const addToCartHandler = () => {
-    dispatch(addItemsToCart(id, quantity));
-    //addItemToCart(product, () => setRedirect(true));
-    alert.success("Item Added To Cart");
-  };
-  const getARedirect = redirect => {
-    if (redirect) {
-      return <Navigate to="/cart" />;
-    }
-  };
-  const review = {
-    productId:product._id,
-    ratings:rating,
-    comment:comment
-
-  } 
-  const token = getLocalStorage("token");
-  const {name,_id } = isAutheticated();
- 
-  console.log(name);
-  const reviewSubmitHandler = () => {
-    createReview(_id,name,token,review)
-    .then((response) => {
-      console.log(response, "123");
-      if (response.success == true) {
-        console.log("true");
-        
-         
-      } 
-     
-    })
-    .catch((err) => {
-      toast.error("Something went wrong");
-    });
-
-    setOpen(false);
-  };
+  const { success, error: reviewError } = useSelector(
+    (state) => state.newReview
+  );
 
   const options = {
     size: "large",
@@ -109,6 +48,49 @@ console.log(quantity,"nfurg");
     readOnly: true,
     precision: 0.5,
   };
+  const [redirect, setRedirect] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+
+
+  const increaseQuantity = () => {
+    if (product.Stock <= quantity) return;
+  const qty = quantity + 1;
+  
+    setQuantity(qty);
+  };
+  
+
+  const decreaseQuantity = () => {
+    if (1 >= quantity) return;
+
+    const qty = quantity - 1;
+    setQuantity(qty);
+  };
+ 
+  const addToCartHandler = () => {
+    dispatch(addItemsToCart(id, quantity));
+    //addItemToCart(product, () => setRedirect(true));
+    alert.success("Item Added To Cart");
+  };
+  const submitReviewToggle = () => {
+    open ? setOpen(false) : setOpen(true);
+  };
+
+  const reviewSubmitHandler = () => {
+    const myForm = new FormData();
+
+    myForm.set("rating", rating);
+    myForm.set("comment", comment);
+    myForm.set("productId", id);
+
+    dispatch(newReview(myForm));
+
+    setOpen(false);
+  };
+  
 
 
   useEffect(() => {
@@ -117,13 +99,17 @@ console.log(quantity,"nfurg");
       dispatch(clearErrors());
     }
 
-    // if (reviewError) {
-    //   alert.error(reviewError);
-    //   dispatch(clearErrors());
-    // }
+    if (reviewError) {
+      alert.error(reviewError);
+      dispatch(clearErrors());
+    }
+    if (success) {
+      alert.success("Review Submitted Successfully");
+      dispatch({ type: NEW_REVIEW_RESET });
+    }
    
     dispatch(getProductDetails(id));
-  }, [dispatch,id, error,alert]);
+  }, [dispatch,id,error, alert, reviewError, success]);
 
   return (
     <Fragment>

@@ -22,37 +22,23 @@ const UpdateProfile = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [avatar, setAvatar] = useState();
-  // const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
   const updateProfileSubmit = (e) => {
     e.preventDefault();
-
+    
+    const token = localStorage.getItem("token");
     const myForm = new FormData();
 
     myForm.set("name", name);
     myForm.set("email", email);
-    // myForm.set("avatar", avatar);
-    dispatch(updateProfile(myForm));
+
+    dispatch(updateProfile(myForm, token));
   };
-
-  // const updateProfileDataChange = (e) => {
-  //   const reader = new FileReader();
-
-  //   reader.onload = () => {
-  //     if (reader.readyState === 2) {
-  //       setAvatarPreview(reader.result);
-  //       setAvatar(reader.result);
-  //     }
-  //   };
-
-  //   reader.readAsDataURL(e.target.files[0]);
-  // };
 
   useEffect(() => {
     if (user) {
       setName(user.name);
       setEmail(user.email);
-      // setAvatarPreview(user.avatar.url);
     }
 
     if (error) {
@@ -110,15 +96,6 @@ const UpdateProfile = () => {
                   />
                 </div>
 
-                {/* <div id="updateProfileImage">
-                  <img src={avatarPreview} alt="Avatar Preview" />
-                  <input
-                    type="file"
-                    name="avatar"
-                    accept="image/*"
-                    onChange={updateProfileDataChange}
-                  />
-                </div> */}
                 <input
                   type="submit"
                   value="Update"
