@@ -6,7 +6,7 @@ import store from './store';
 import { positions, transitions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 import { CookiesProvider } from "react-cookie";
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const options = {

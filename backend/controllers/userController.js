@@ -36,18 +36,30 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   // checking if user has given password and email both
 
   if (!email || !password) {
-    return next(new ErrorHander("Please Enter Email & Password", 400));
+    // return next(new ErrorHander("Please Enter Email & Password", 400));
+    res.status(400).json({
+      success: false,
+      message: "Please Enter Email & Password",
+    })
   }
 
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    return next(new ErrorHander("Invalid email or password", 401));
+    // return next(new ErrorHander("Invalid email or password", 401));
+    res.status(401).json({
+      success: false,
+      message: "Invalid email or password",
+    })
   }
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
-    return next(new ErrorHander("Invalid email or password", 401));
+    // return next(new ErrorHander("Invalid email or password", 401));
+    res.status(401).json({
+      success: false,
+      message: "Invalid email or password",
+    })
   }
   sendToken(user, 200, res);
 });
@@ -69,7 +81,11 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-    return next(new ErrorHander("User not found", 404));
+    // return next(new ErrorHander("User not found", 404));
+    res.status(404).json({
+      success: false,
+      message: "User not found",
+    })
   }
 
   // Get ResetPassword Token
@@ -102,8 +118,13 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 
     await user.save({ validateBeforeSave: false });
 
-    return next(new ErrorHander(error.message, 500));
+    // return next(new ErrorHander(error.message, 500));
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    })
   }
+  
 });
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   // creating token hash
@@ -118,16 +139,24 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(
-      new ErrorHander(
-        "Reset Password Token is invalid or has been expired",
-        400
-      )
-    );
+    // return next(
+    //   new ErrorHander(
+    //     "Reset Password Token is invalid or has been expired",
+    //     400
+    //   )
+    // );
+    res.status(400).json({
+      success: false,
+      message: "Reset Password Token is invalid or has been expired",
+    })
   }
 
   if (req.body.password !== req.body.confirmPassword) {
-    return next(new ErrorHander("Password does not password", 400));
+    // return next(new ErrorHander("Password does not password", 400));
+    res.status(400).json({
+      success: false,
+      message: "Password does not password",
+    })
   }
 
   user.password = req.body.password;
@@ -178,11 +207,19 @@ exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
   const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
 
   if (!isPasswordMatched) {
-    return next(new ErrorHander("Old password is incorrect", 400));
+    // return next(new ErrorHander("Old password is incorrect", 400));
+    res.status(400).json({
+      success: false,
+      message: "Old password is incorrect",
+    })
   }
 
   if (req.body.newPassword !== req.body.confirmPassword) {
-    return next(new ErrorHander("password does not match", 400));
+    // return next(new ErrorHander("password does not match", 400));
+    res.status(400).json({
+      success: false,
+      message: "password does not match",
+    })
   }
 
   user.password = req.body.newPassword;
@@ -209,7 +246,11 @@ exports.getSingleUser = catchAsyncErrors(async (req, res, next) => {
 
   if (!users) {
     return next(
-      new ErrorHander(`User does not exist with Id: ${req.params.id}`)
+      // new ErrorHander(`User does not exist with Id: ${req.params.id}`)
+      res.status(400).json({
+        success: false,
+        message: (`User does not exist with Id: ${req.params.id}`),
+      })
     );
   }
 
@@ -242,9 +283,13 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
     const { id } = req.params;
     const user = await User.findByIdAndDelete(id);
     if (!user) {
-      return next(
-        new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400)
-      );
+      // return next(
+      //   new ErrorHander(`User does not exist with Id: ${req.params.id}`, 400)
+      // );
+      res.status(400).json({
+        success: false,
+        message: (`User does not exist with Id: ${req.params.id}`),
+      })
     }
     res.status(200).json({
       success: true,

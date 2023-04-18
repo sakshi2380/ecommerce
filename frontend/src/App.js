@@ -58,7 +58,7 @@ function App() {
         <Route exact path="/product/:id" element={<ProductDetails />} />
         <Route exact path="/products" element={<Products />} />
         <Route path="/products/:keyword" element={<Products />} />
-        <Route exact path="/search" element={<Search />} />
+        <Route exact path="/Search" element={<Search />} />
         <Route exact path="/login" element={<LoginSignUp />} />
 
         <Route exact path="/password/forgot" element={<ForgotPassword />} />
@@ -68,7 +68,7 @@ function App() {
           <Route exact path="/account" element={<Profile />} />
           <Route exact path="/me/update" element={<UpdateProfile />} />
           <Route exact path="/password/update" element={<UpdatePasssword />} />
-          <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/Cart" element={<Cart />} />
           <Route exact path="/useroption" element={<UserOption />} />
           <Route exact path="/shipping" element={<Shipping />} />
           <Route exact path="/order/confirm" element={<ConfirmOrder />} />

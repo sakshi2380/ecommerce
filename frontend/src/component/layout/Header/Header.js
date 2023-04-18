@@ -14,14 +14,12 @@ const options = {
     logoHoverColor: "#eb4034",
     link1Text: "Home",
     link2Text: "Products",
-    link3Text: "Login",
-    link4Text: "Search",
-    
+    link3Text: "Contact",
+    link4Text: "About",
     link1Url: "/",
     link2Url: "/products",
-    link3Url: "/login",
-    link4Url: "/search",
-    
+    link3Url: "/contact",
+    link4Url: "/about",
     link1Size: "1.3vmax",
     link1Color: "rgba(35, 35, 35,0.8)",
     nav1justifyContent: "flex-end",
@@ -38,9 +36,8 @@ const options = {
     searchIconColorHover: "#eb4034",
     cartIconColorHover: "#eb4034",
     cartIconMargin: "1vmax",
-    // profileIcon:true,
-     ProfileIconElement:<CgProfile/>,
   };
+  
 const Header = () =>{
     return <ReactNavbar {...options} />;
 }
