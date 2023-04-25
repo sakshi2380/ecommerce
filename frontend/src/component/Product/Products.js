@@ -10,77 +10,79 @@ import Slider from "@material-ui/core/Slider";
 import { useAlert } from "react-alert";
 import Typography from "@material-ui/core/Typography";
 import MetaData from "../layout/MetaData";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
+import UserOption from "../layout/Header/UserOption";
 
-const categories = [
-    "Laptop",
+const Products = ({ match }) => {
+  const categories = [
+    "men's clothing",
+    "jewelery",
+    "electronics",
+    "women's clothing",
+    "Kids",
     "Footwear",
-    "Bottom",
-    "Tops",
-    "Attire",
-    "Camera",
-    "phone",
+    "Beauty",
   ];
+  console.log(categories);
 
-const Products = ({match}) => {
-    
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const alert = useAlert();
+  const alert = useAlert();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [price, setPrice] = useState([0, 25000]);
+  const [category, setCategory] = useState();
+
+  const [ratings, setRatings] = useState(0);
+
+ 
+  const {
+    products,
+    loading,
+    error,
+    productsCount,
+    resultPerPage,
+    filteredProductsCount,
+  } = useSelector((state) => state.products);
+
+  const { keyword } = useParams();
+
+   const setCurrentPageNo = (e) => {
+    setCurrentPage(e);
+  };
+
+  const priceHandler = (event, newPrice) => {
+    setPrice(newPrice);
+  };
+  let count = filteredProductsCount;
+
+  useEffect(() => {
+    if (error) {
+      alert.error(error);
+      dispatch(clearErrors());
+    }
+    dispatch(getProduct(keyword, currentPage, price, category, ratings));
+  }, [dispatch, keyword, currentPage, price, category, ratings, alert, error]);
+
   
-    const [currentPage, setCurrentPage] = useState(1);
-    const [price, setPrice] = useState([0, 25000]);
-    const [category, setCategory] = useState("");
-  
-   const [ratings, setRatings] = useState(0);
-    const data = 1
-    const {
-      products,
-      loading,
-      error,
-      productsCount,
-      resultPerPage,
-      filteredProductsCount,
-    } = useSelector((state) => state.products);
-console.log(products,'ffff');
-    const { keyword } = useParams()
-    const setCurrentPageNo = (e) => {
-        setCurrentPage(e);
-      };
-    
-      const priceHandler = (event, newPrice) => {
-        setPrice(newPrice);
-      };
-     
-    
-      useEffect(() => {
-        if (error) {
-          alert.error(error);
-          dispatch(clearErrors());
-        }
-    
-        dispatch(getProduct(keyword, currentPage, price,category,ratings));
-      }, [dispatch, keyword, currentPage, price,category,ratings,alert, error]);
-      let count = filteredProductsCount;
-      console.log(count);
-    return (
+  return (
+    <Fragment>
+      {loading ? (
+        <Loader />
+      ) : (
         <Fragment>
+          <MetaData title="PRODUCTS -- ECOMMERCE" />
+          <h2 className="productsHeading">Products</h2>
 
-        {loading ? (
-          <Loader />
-        ) : (
-          <Fragment>
-            <MetaData title="PRODUCTS -- Trendskart" />
-            <h2 className="productsHeading">Products</h2>
-  
-            <div className="products">
-              {products &&
-                products.map((product) => (
-                  <ProductCart key={product._id} product={product} />
-                ))}
-            </div>
-            <div className="filterBox">
+          <div className="products">
+            {products &&
+              products.map((product) => (
+                <ProductCart key={product._id} product={product} />
+              ))}
+          </div>
+
+          <div className="filterBox">
             <Typography>Price</Typography>
             <Slider
               value={price}
@@ -90,7 +92,8 @@ console.log(products,'ffff');
               min={0}
               max={25000}
             />
-             <Typography>Categories</Typography>
+
+            <Typography>Categories</Typography>
             <ul className="categoryBox">
               {categories.map((category) => (
                 <li
@@ -102,6 +105,7 @@ console.log(products,'ffff');
                 </li>
               ))}
             </ul>
+
             <fieldset>
               <Typography component="legend">Ratings Above</Typography>
               <Slider
@@ -115,33 +119,29 @@ console.log(products,'ffff');
                 max={5}
               />
             </fieldset>
-
-
-            </div>
-            {resultPerPage <= filteredProductsCount && (
+          </div>
+          {resultPerPage <= count && (
             <div className="paginationBox">
               <Pagination
-                 activePage={currentPage}
-                 itemsCountPerPage={resultPerPage}
-                 totalItemsCount={productsCount}
-                 onChange={setCurrentPageNo}
-                 nextPageText="Next"
-                 prevPageText="Prev"
-                 firstPageText="1st"
-                 lastPageText="Last"
-                 itemClass="page-item"
-                 linkClass="page-link"
-                 activeClass="pageItemActive"
-                 activeLinkClass="pageLinkActive"
+                activePage={currentPage}
+                itemsCountPerPage={resultPerPage}
+                totalItemsCount={productsCount}
+                onChange={setCurrentPageNo}
+                nextPageText="Next"
+                prevPageText="Prev"
+                firstPageText="1st"
+                lastPageText="Last"
+                itemClass="page-item"
+                linkClass="page-link"
+                activeClass="pageItemActive"
+                activeLinkClass="pageLinkActive"
               />
-
             </div>
           )}
-            </Fragment>
-        )}
         </Fragment>
-  
+      )}
+    </Fragment>
   );
-}
+};
 
-export default Products
+export default Products;

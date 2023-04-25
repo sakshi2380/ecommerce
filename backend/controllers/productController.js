@@ -13,7 +13,7 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
 })
 // Get All Product
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
-  const resultPerPage = 8;
+  const resultPerPage = 6;
   const productsCount = await Product.countDocuments();
 
   const apiFeature = new ApiFeatures(Product.find(), req.query)
@@ -93,14 +93,14 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     comment,
   };
 
+
   const product = await Product.findById(productId);
 
-  const isReviewed = product.reviews.find( (rev) => 
-    
-    rev.user.toString() === req.user._id.toString()
-    
+  const isReviewed = product.reviews.find(
+    (rev) => rev.user === req.user._id
   );
-  console.log(":"+product.reviews.find((rev)=>{ rev.user.toString() }));
+
+  console.log(":"+product.reviews.find((rev)=>{ rev.params }));
 
   if (isReviewed) {
     product.reviews.forEach((rev) => {
@@ -109,9 +109,7 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     });
   } else {
     product.reviews.push(review);
-    console.log(product.review);
     product.numOfReviews = product.reviews.length;
-    console.log(product.numOfReviews);
   }
 
   let avg = 0;
@@ -190,5 +188,14 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+  });
+});
+// Get All Product (Admin)
+exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
+  const products = await Product.find();
+
+  res.status(200).json({
+    success: true,
+    products,
   });
 });

@@ -3,6 +3,8 @@ const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const otpGenerator = require("otp-generator");
+const { OTP, Otp } = require("../models/otpModel");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -26,11 +28,11 @@ const userSchema = new mongoose.Schema({
   avatar: {
     public_id: {
       type: String,
-      required: true,
+      default: "sample url",
     },
     url: {
       type: String,
-      required: true,
+      default:"https://raw.githubusercontent.com/meabhisingh/mernProjectEcommerce/master/frontend/src/images/Profile.png"
     },
   },
   role: {
@@ -44,6 +46,8 @@ const userSchema = new mongoose.Schema({
 
   resetPasswordToken: String,
   resetPasswordExpire: Date,
+ 
+  
 });
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
@@ -67,17 +71,28 @@ userSchema.methods.comparePassword = async function (password) {
 // Generating Password Reset Token
 userSchema.methods.getResetPasswordToken = function () {
   // Generating Token
-  const resetToken = crypto.randomBytes(20).toString("hex");
-
-  // Hashing and adding resetPasswordToken to userSchema
-  this.resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
-
+  const OTP = otpGenerator.generate(4, {
+    digits: true,
+    upperCaseAlphabets: false,
+    lowerCaseAlphabets: false,
+    specialChars: false,
+  });
+  this.resetPasswordToken=OTP;
   this.resetPasswordExpire = Date.now() + 15 * 60 * 1000;
-
-  return resetToken;
+  return OTP;
 };
+userSchema.methods.generateOTP = async function(){
+  const OTP = otpGenerator.generate(4, {
+    digits: true,
+    upperCaseAlphabets: false,
+    lowerCaseAlphabets: false,
+    specialChars: false,
+  });
+  const otp = new Otp({ email: this.email, otp: OTP });
+  const salt = await bcrypt.genSalt(10);
+  otp.otp = await bcrypt.hash(otp.otp, salt);
+  const result = await otp.save();
+  return result
+}
 
 module.exports = mongoose.model("User", userSchema);

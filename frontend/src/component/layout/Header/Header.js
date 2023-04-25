@@ -4,23 +4,24 @@ import { ReactNavbar } from "overlay-navbar";
 //import { FaBeer } from "@react-icons/all-files/fa/FaBeer";
 import { CgProfile } from "react-icons/cg";
 
-import logo from "../../../images/logo.png"
+import logo from "../../../images/OIP.jpg"
+
 const options = {
     burgerColorHover: "#eb4034",
     logo,
     logoWidth: "20vmax",
     navColor1: "white",
     logoHoverSize: "10px",
-    logoHoverColor: "#eb4034",
+    logoHoverColor: "#ffffff",
     link1Text: "Home",
     link2Text: "Products",
-    link3Text: "Contact",
+    link3Text: "Login",
     link4Text: "Search",
-    
+
     link1Url: "/",
     link2Url: "/products",
     link3Url: "/login",
-    link4Url: "/search",
+    link4Url: "/Search",
     
     link1Size: "1.3vmax",
     link1Color: "rgba(35, 35, 35,0.8)",
@@ -38,9 +39,8 @@ const options = {
     searchIconColorHover: "#eb4034",
     cartIconColorHover: "#eb4034",
     cartIconMargin: "1vmax",
-    // profileIcon:true,
-     ProfileIconElement:<CgProfile/>,
   };
+
 const Header = () =>{
     return <ReactNavbar {...options} />;
 }

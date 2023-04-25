@@ -15,6 +15,16 @@
     justify-content: center;
     min-height: 30vh;
   }
+  .productCard {
+    width: 20vmax;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: rgb(48, 48, 48);
+    margin: 2vmax;
+    transition: all 0.5s;
+    padding-bottom: 0.5vmax;
+}
   
   .paginationBox {
     display: flex;
@@ -48,6 +58,7 @@
     font: 300 0.7vmax "Roboto";
     color: rgb(80, 80, 80);
     transition: all 0.3s;
+    
   }
   
   .page-item:hover {
