@@ -20,15 +20,15 @@ const ProductList = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const alert = useAlert();
-
+  const token = localStorage.getItem("token")
   const { error, products } = useSelector((state) => state.products);
 
-//   const { error: deleteError, isDeleted } = useSelector(
-//     (state) => state.product
-//   );
+  const { error: deleteError, isDeleted } = useSelector(
+    (state) => state.product
+  );
 
   const deleteProductHandler = (id) => {
-    // dispatch(deleteProduct(id));
+    dispatch(deleteProduct(id,token));
   };
 
   useEffect(() => {
@@ -37,20 +37,20 @@ const ProductList = () => {
       dispatch(clearErrors());
     }
 
-    // if (deleteError) {
-    //   alert.error(deleteError);
-    //   dispatch(clearErrors());
-    // }
+    if (deleteError) {
+      alert.error(deleteError);
+      dispatch(clearErrors());
+    }
 
-    // if (isDeleted) {
-    //   alert.success("Product Deleted Successfully");
-    //   history("/admin/dashboard");
-    //   dispatch({ type: DELETE_PRODUCT_RESET });
-    // }
-const token = localStorage.getItem("token")
+    if (isDeleted) {
+      alert.success("Product Deleted Successfully");
+      history("/admin/dashboard");
+      dispatch({ type: DELETE_PRODUCT_RESET });
+    }
+
 console.log(token);
     dispatch(getAdminProduct(token));
-  }, [dispatch, alert, error, history]);
+  }, [dispatch, alert, error, history,isDeleted]);
 
   const columns = [
     { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },

@@ -55,8 +55,7 @@
     "url": "^0.11.0",
     "util": "^0.12.5",
     "web-vitals": "^2.1.4",
-    "webfontloader": "^1.6.28",
-    "zlib": "^1.0.5"
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",
