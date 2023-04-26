@@ -226,10 +226,18 @@ export const resetPassword = (token, passwords) => async (dispatch) => {
 };
 
 // get All Users
-export const getAllUsers = () => async (dispatch) => {
+export const getAllUsers = (token) => async (dispatch) => {
   try {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+        
+      },
+    };
     dispatch({ type: ALL_USERS_REQUEST });
-    const { data } = await axios.get(`http://localhost:4000/api/admin/users`);
+    const { data } = await axios.get(`http://localhost:4000/api/admin/users`,config);
 
     dispatch({ type: ALL_USERS_SUCCESS, payload: data.users });
   } catch (error) {
@@ -238,11 +246,19 @@ export const getAllUsers = () => async (dispatch) => {
 };
 
 // get  User Details
-export const getUserDetails = (id) => async (dispatch) => {
+export const getUserDetails = (id,token) => async (dispatch) => {
   try {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+        
+      },
+    };
     dispatch({ type: USER_DETAILS_REQUEST });
     const { data } = await axios.get(
-      `http://localhost:4000/api/admin/user/${id}`
+      `http://localhost:4000/api/admin/user/${id}`,config
     );
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
@@ -252,11 +268,18 @@ export const getUserDetails = (id) => async (dispatch) => {
 };
 
 // Update User
-export const updateUser = (id, userData) => async (dispatch) => {
+export const updateUser = (id, userData,token) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_USER_REQUEST });
 
-    const config = { headers: { "Content-Type": "application/json" } };
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+        
+      },
+    };
 
     const { data } = await axios.put(
       `http://localhost:4000/api/admin/user/${id}`,
@@ -274,12 +297,20 @@ export const updateUser = (id, userData) => async (dispatch) => {
 };
 
 // Delete User
-export const deleteUser = (id) => async (dispatch) => {
+export const deleteUser = (id,token) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_USER_REQUEST });
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+        
+      },
+    };
 
     const { data } = await axios.delete(
-      `http://localhost:4000/admin/user/${id}`
+      `http://localhost:4000/admin/user/${id}`,config
     );
 
     dispatch({ type: DELETE_USER_SUCCESS, payload: data });

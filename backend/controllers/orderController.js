@@ -33,34 +33,32 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 // // get Single Order
 exports.getSingleOrder = catchAsyncErrors(async (req, res, next) => {
-    const order = await Order.findById(req.params.id).populate(
-      "user",
-      "name email"
-    );
-  
-    if (!order) {
-      return next(new ErrorHander("Order not found with this Id", 404));
-    }
-  
-    res.status(200).json({
-      success: true,
-      order,
-    });
-  });
+  const order = await Order.findById(req.params.id).populate(
+    "user",
+    "name email"
+  );
 
-  // get logged in user  Orders
+  if (!order) {
+    return next(new ErrorHander("Order not found with this Id", 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    order,
+  });
+});
+
+// get logged in user  Orders
 exports.myOrders = catchAsyncErrors(async (req, res, next) => {
-    const orders = await Order.find({ user: req.user._id });
-  console.log(orders);
-    res.status(200).json({
-      success: true,
-      orders,
-    });
-  });
+  const orders = await Order.find({ user: req.user._id });
 
+  res.status(200).json({
+    success: true,
+    orders,
+  });
+});
 
 // get all Orders -- Admin
 exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
@@ -117,22 +115,19 @@ async function updateStock(id, quantity) {
 }
 //// delete Order -- Admin
 exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
-  
   try {
-    const{id} = req.params
+    const { id } = req.params;
     console.log(id);
-    const order = await  Order.findByIdAndDelete(id)
+    const order = await Order.findByIdAndDelete(id);
     console.log(order);
     if (!order) {
-        return next(new ErrorHander("Order not found with this Id", 404));
-      }
-      res.status(200).json({
-        success: true,
-        
-      });
-        } catch (error) {
-            console.log(error.message);
-            res.status(500).json({message: error.message}) 
-        }
-
-})
+      return next(new ErrorHander("Order not found with this Id", 404));
+    }
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});

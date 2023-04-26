@@ -17,7 +17,7 @@ console.log(order);
   const dispatch = useDispatch();
   const alert = useAlert();
   const {id} = useParams()
-  const token = JSON.parse(localStorage.getItem('token'))
+  const token = localStorage.getItem('token')
 
   useEffect(() => {
     if (error) {

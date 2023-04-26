@@ -37,6 +37,9 @@ import Cookies from 'js-cookie'
 import Contact from "./component/Home/contact";
 import About from "./component/Home/About";
 import OrderDetails from "./component/Order/OrderDetails";
+import Dashboard from "./component/Admin/Dashboard.js";
+import NewProduct from "./component/Admin/NewProduct";
+import ProductList from "./component/Admin/ProductList"
 
 
 function App() {
@@ -86,6 +89,9 @@ function App() {
           <Route exact path="/orders" element={<MyOrders />} />
           <Route exact path="/process/payment" element={<Payment />} />
           <Route exact path="/order/:id" element={<OrderDetails />} />
+          <Route exact path="/admin/dashboard" element={<Dashboard />} />
+          <Route exact path="/admin/products" element={<ProductList />} />
+          <Route exact path="/admin/product" element={<NewProduct />} />
         </Route>
 
         {/* <Route exact path="/process/payment" element={<Payment />} /> */}

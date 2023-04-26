@@ -94,3 +94,27 @@ export const getOrderDetails = (id,token) => async (dispatch) => {
     });
   }
 };
+
+// Get All Orders (admin)
+export const getAllOrders = (token) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+        
+      },
+    };
+    dispatch({ type: ALL_ORDERS_REQUEST });
+
+    const { data } = await axios.get("http://localhost:4000/api/admin/orders",config);
+
+    dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
+  } catch (error) {
+    dispatch({
+      type: ALL_ORDERS_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
