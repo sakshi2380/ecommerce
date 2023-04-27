@@ -4,7 +4,7 @@ import {
     SAVE_SHIPPING_INFO,
   } from "../constants/cartConstants";
   import axios from "axios";
-  import { BASE_URL } from "../constants/globals";
+
   
   // Add to Cart
   export const addItemsToCart = (id, quantity,token) => async (dispatch, getState) => {

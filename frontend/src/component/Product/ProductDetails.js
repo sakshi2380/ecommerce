@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import "./ProductDetails.css";
-import { toast } from "react-toastify";
 import ReactStars from "react-star-rating-component";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -14,9 +13,9 @@ import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
 import MetaData from "../layout/MetaData";
 
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import { addItemsToCart } from "../../actions/cartAction";
-import { NEW_REVIEW_RESET } from "../../constants/productConstants"
+import { NEW_REVIEW_RESET } from "../../constants/productConstants";
 import {
   Dialog,
   DialogActions,
@@ -25,10 +24,6 @@ import {
   Button,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
-import { addItemToCart , removeItemFromCart } from "../../helper/cartHelper"
-
-
-
 
 const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
@@ -48,20 +43,18 @@ const ProductDetails = ({ match }) => {
     readOnly: true,
     precision: 0.5,
   };
-  const [redirect, setRedirect] = useState(false);
+  
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
 
-
   const increaseQuantity = () => {
     if (product.Stock <= quantity) return;
-  const qty = quantity + 1;
-  
+    const qty = quantity + 1;
+
     setQuantity(qty);
   };
-  
 
   const decreaseQuantity = () => {
     if (1 >= quantity) return;
@@ -69,7 +62,7 @@ const ProductDetails = ({ match }) => {
     const qty = quantity - 1;
     setQuantity(qty);
   };
- 
+
   const addToCartHandler = () => {
     dispatch(addItemsToCart(id, quantity));
     //addItemToCart(product, () => setRedirect(true));
@@ -79,9 +72,8 @@ const ProductDetails = ({ match }) => {
     open ? setOpen(false) : setOpen(true);
   };
 
-const token = localStorage.getItem('token')
+  const token = localStorage.getItem("token");
   const reviewSubmitHandler = () => {
-
     const myForm = new FormData();
 
     myForm.set("rating", rating);
@@ -92,8 +84,6 @@ const token = localStorage.getItem('token')
 
     setOpen(false);
   };
-  
-
 
   useEffect(() => {
     if (error) {
@@ -109,9 +99,9 @@ const token = localStorage.getItem('token')
       alert.success("Review Submitted Successfully");
       dispatch({ type: NEW_REVIEW_RESET });
     }
-   
+
     dispatch(getProductDetails(id));
-  }, [dispatch,id,error, alert, reviewError, success]);
+  }, [dispatch, id, error, alert, reviewError, success]);
 
   return (
     <Fragment>
@@ -122,7 +112,7 @@ const token = localStorage.getItem('token')
           <MetaData title={`${product.name} -- ECOMMERCE`} />
           <div className="ProductDetails">
             <div>
-              <Carousel  sx={{ height:500, width:500}}>
+              <Carousel sx={{ height: 500, width: 500 }}>
                 {product.images &&
                   product.images.map((item, i) => (
                     <img
@@ -152,7 +142,7 @@ const token = localStorage.getItem('token')
                 <div className="detailsBlock-3-1">
                   <div className="detailsBlock-3-1-1">
                     <button onClick={decreaseQuantity}>-</button>
-                   
+
                     <span>{quantity}</span>
                     {/* <input readOnly type="number" value={quantity} /> */}
                     <button onClick={increaseQuantity}>+</button>
@@ -177,7 +167,7 @@ const token = localStorage.getItem('token')
                 Description : <p>{product.description}</p>
               </div>
 
-              <button  className="submitReview" onClick={submitReviewToggle}>
+              <button className="submitReview" onClick={submitReviewToggle}>
                 Submit Review
               </button>
             </div>

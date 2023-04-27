@@ -1,26 +1,15 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import "./Home.css";
-import { CgMouse } from "react-icons/cg";
+
 import ProductCard from "./ProductCart";
 import MetaData from "../layout/MetaData";
 import { getProduct, clearErrors } from "../../actions/productAction";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
-import UserOption from "../layout/Header/UserOption";
 
 import Carousel from "react-bootstrap/Carousel";
-// import { useAlert } from "react-alert";
-const product = {
-  name: "blueshirt",
-  price: "400",
-  _id: "sakshi",
-  images: [
-    {
-      url: "https://images.pexels.com/photos/2769274/pexels-photo-2769274.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    },
-  ],
-};
+
 const Home = () => {
   const alert = useAlert();
   const dispatch = useDispatch();

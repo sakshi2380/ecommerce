@@ -3,11 +3,13 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
   
+  newProductReducer,
+  newReviewReducer,
   productDetailsReducer,
   productReducer,
-  newReviewReducer,
+  productReviewsReducer,
   productsReducer,
-  newProductReducer,
+  reviewReducer,
  
 } from "./reducers/productReducer"
 import {
@@ -32,6 +34,8 @@ const reducer = combineReducers({
     productDetails:productDetailsReducer,
     newReview: newReviewReducer,
     newProduct:newProductReducer,
+    productReviews: productReviewsReducer,
+  review: reviewReducer,
   
 
 
@@ -51,7 +55,7 @@ const reducer = combineReducers({
     forgotPassword: forgotPasswordReducer,
     allUsers: allUsersReducer,
   userDetails: userDetailsReducer,
-  allUsers: allUsersReducer,
+  
  
   
  

@@ -218,6 +218,7 @@ exports.getProductReviews = catchAsyncErrors(async (req, res, next) => {
     reviews: product.reviews,
   });
 });
+
 // Delete Review
 exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
   const product = await Product.findById(req.query.productId);
@@ -263,8 +264,7 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
   });
-});
-// Get All Product (Admin)
+});// Get All Product (Admin)
 exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
   const products = await Product.find();
 

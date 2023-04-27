@@ -12,7 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import MetaData from "../layout/MetaData";
 import { useParams } from "react-router-dom";
 import Pagination from "react-js-pagination";
-import UserOption from "../layout/Header/UserOption";
+
 
 const Products = ({ match }) => {
   const categories = [

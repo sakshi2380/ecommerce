@@ -95,7 +95,7 @@ export const newReview = (reviewData,token) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.put(`http://localhost:4000/api/review`, reviewData, config);
+    const { data } = await axios.put("http://localhost:4000/api/review", reviewData, config);
 
     dispatch({
       type: NEW_REVIEW_SUCCESS,
@@ -227,6 +227,64 @@ export const updateProduct = (id, productData,token) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Get All Reviews of a Product
+export const getAllReviews = (id,token) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+        
+      },
+    };
+
+    dispatch({ type: ALL_REVIEW_REQUEST });
+
+    const { data } = await axios.get(`http://localhost:4000/api/allreview?id=${id}`,config);
+
+    dispatch({
+      type: ALL_REVIEW_SUCCESS,
+      payload: data.reviews,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_REVIEW_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Delete Review of a Product
+export const deleteReviews = (reviewId,productId,token) => async (dispatch) => {
+  try {
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+        
+      },
+    };
+
+    dispatch({ type: DELETE_REVIEW_REQUEST });
+
+    const { data } = await axios.delete(
+      `http://localhost:4000/api/allreview?id=${reviewId}&productId=${productId}`,config
+    );
+
+    dispatch({
+      type: DELETE_REVIEW_SUCCESS,
+      payload: data.success,
+    });
+  } catch (error) {
+    dispatch({
+      type: DELETE_REVIEW_FAIL,
       payload: error.response.data.message,
     });
   }

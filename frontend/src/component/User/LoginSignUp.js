@@ -9,13 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login, register } from "../../actions/userAction";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import Cookies from 'universal-cookie';
+
+
 
 const LoginSignUp = () => {
-  const cookie = new Cookies()
+
   const dispatch = useDispatch();
-  // const [cookies, setCookie] = useCookies(["token", "refresh_token"]);
+ 
   const alert = useAlert();
   const history = useNavigate();
   const { error, loading, isAuthenticated } = useSelector(
