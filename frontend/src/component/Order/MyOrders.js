@@ -14,7 +14,7 @@ import LaunchIcon from "@material-ui/icons/Launch";
 
 const MyOrders = () => {
     const dispatch = useDispatch();
-    // const token = localStorage.getItem('token')
+    
 
 
     const alert = useAlert();
@@ -23,7 +23,7 @@ const MyOrders = () => {
     console.log(orders);
     
     const { user } = useSelector((state) => state.user);
-    // console.log(user);
+    
     const columns = [
       { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
   

@@ -45,6 +45,7 @@ import ProcessOrder from "./component/Admin/ProcessOrder";
 import UsersList from "./component/Admin/UsersList"
 import UpdateUser from "./component/Admin/UpdateUser"
 import ProductReviews from "./component/Admin/ProductReviews";
+import NotFound from "./component/layout/Not Found/NotFound";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -60,7 +61,7 @@ function App() {
     });
 
     store.dispatch(loadUser(c1));
-  }, []);
+  }, [c1]);
   window.addEventListener("contextmenu", (e) => e.preventDefault());
   return (
     <Router>
@@ -73,6 +74,7 @@ function App() {
         <Route path="/products/:keyword" element={<Products />} />
         <Route exact path="/Search" element={<Search />} />
         <Route exact path="/login" element={<LoginSignUp />} />
+        <Route path="*" element={<NotFound />} />
 
         <Route exact path="/password/forgot" element={<ForgotPassword />} />
         <Route exact path="/password" element={<ResetPassword />} />

@@ -13,6 +13,12 @@ dotenv.config({
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: "djkggzbn9",
+  api_key: "166265738528474",
+  api_secret: "I4V4jOJ2IkliR6k31ASSpp_z1ik",
+  secure: true,
+});
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
@@ -158,12 +164,31 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
+ 
+
   const newUserData = {
     name: req.body.name,
     email: req.body.email,
   };
+  if (req.body.avatar !== "") {
+    const user = await User.findById(req.user.id);
 
-  const users = await User.findById(req.user.id);
+    const imageId = user.avatar.public_id;
+
+    await cloudinary.uploader.destroy(imageId);
+
+    const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
+
+    newUserData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
+
 
   const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
     new: true,
@@ -173,7 +198,6 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    user,
   });
 });
 
