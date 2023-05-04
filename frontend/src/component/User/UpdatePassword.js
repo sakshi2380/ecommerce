@@ -53,7 +53,7 @@ const UpdatePassword = () => {
             type: UPDATE_PASSWORD_RESET,
           });
         }
-      }, [dispatch, error, alert, history, isUpdated]);
+      }, [dispatch, error, alert, history, isUpdated,token]);
   return (
     <Fragment>
     {loading ? (

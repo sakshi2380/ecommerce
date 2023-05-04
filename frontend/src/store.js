@@ -2,7 +2,6 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
-  
   newProductReducer,
   newReviewReducer,
   productDetailsReducer,
@@ -10,57 +9,46 @@ import {
   productReviewsReducer,
   productsReducer,
   reviewReducer,
- 
-} from "./reducers/productReducer"
+} from "./reducers/productReducer";
 import {
-    allUsersReducer,
-    forgotPasswordReducer,
-    profileReducer,
-    userDetailsReducer,
-    userReducer,
-    getAllUsers,
-  } from "./reducers/userReducer";
-  import { cartReducer } from "./reducers/cartReducer";
-import { 
-  newOrderReducer ,
+  allUsersReducer,
+  forgotPasswordReducer,
+  profileReducer,
+  userDetailsReducer,
+  userReducer,
+  getAllUsers,
+} from "./reducers/userReducer";
+import { cartReducer } from "./reducers/cartReducer";
+import {
+  newOrderReducer,
   myOrdersReducer,
   orderDetailsReducer,
   allOrdersReducer,
   orderReducer,
 } from "./reducers/orderReducer";
 const reducer = combineReducers({
-    products:productsReducer,
-    product: productReducer,
-    productDetails:productDetailsReducer,
-    newReview: newReviewReducer,
-    newProduct:newProductReducer,
-    productReviews: productReviewsReducer,
+  products: productsReducer,
+  product: productReducer,
+  productDetails: productDetailsReducer,
+  newReview: newReviewReducer,
+  newProduct: newProductReducer,
+  productReviews: productReviewsReducer,
   review: reviewReducer,
-  
 
+  newOrder: newOrderReducer,
+  myOrders: myOrdersReducer,
+  orderDetails: orderDetailsReducer,
+  order: orderReducer,
+  allOrders: allOrdersReducer,
 
-    newOrder:newOrderReducer,
-    myOrders:myOrdersReducer,
-    orderDetails: orderDetailsReducer,
-    order:orderReducer,
-    allOrders:allOrdersReducer,
+  cart: cartReducer,
 
-
-    
-    cart: cartReducer,
-
-
-    user: userReducer,
-    profile: profileReducer,
-    forgotPassword: forgotPasswordReducer,
-    allUsers: allUsersReducer,
+  user: userReducer,
+  profile: profileReducer,
+  forgotPassword: forgotPasswordReducer,
+  allUsers: allUsersReducer,
   userDetails: userDetailsReducer,
-  
- 
-  
- 
-  
-})
+});
 let initialState = {
   cart: {
     cartItems: localStorage.getItem("cartItems")
@@ -73,11 +61,9 @@ let initialState = {
 };
 const middleware = [thunk];
 const store = createStore(
-    
-    reducer,
-    initialState,
-    composeWithDevTools(applyMiddleware(...middleware)),
-    );
-    
-  
-  export default store;
+  reducer,
+  initialState,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
+
+export default store;
