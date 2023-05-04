@@ -15,11 +15,11 @@ import Star from "@material-ui/icons/Star";
 
 import SideBar from "./Sidebar";
 import { DELETE_REVIEW_RESET } from "../../constants/productConstants";
-import { useParams } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 const ProductReviews = () => {
   const dispatch = useDispatch();
-  const history = useParams();
+  const history = useNavigate();
   const alert = useAlert();
   const token = localStorage.getItem("token");
 

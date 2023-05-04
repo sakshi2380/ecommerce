@@ -165,18 +165,13 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     rating: Number(rating),
     comment,
   };
-
+console.log(review,"kvifjfi");
   const product = await Product.findById(productId);
-
-  const isReviewed = product.reviews.find((rev) => rev.user === req.user._id);
-
-  console.log(
-    ":" +
-      product.reviews.find((rev) => {
-        rev.params;
-      })
+  const isReviewed = product.reviews.find(
+    (rev) => rev.user.toString() === req.user._id.toString()
   );
-
+  console.log(user.toString(),"user bbbb");
+  console.log(req.user._id.toString(),"vjnduvudv");
   if (isReviewed) {
     product.reviews.forEach((rev) => {
       if (rev.user.toString() === req.user._id.toString())
@@ -187,12 +182,13 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     product.numOfReviews = product.reviews.length;
   }
 
+console.log(isReviewed,"igtb");
   let avg = 0;
-  console.log(avg);
+ 
   product.reviews.forEach((rev) => {
     console.log("rating" + rev.rating);
     avg += rev.rating;
-    console.log(avg);
+    console.log(avg,"avg");
   });
   console.log(avg);
 
