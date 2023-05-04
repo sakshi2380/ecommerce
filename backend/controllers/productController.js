@@ -122,7 +122,6 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
 exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -131,9 +130,9 @@ exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
       return next(new ErrorHander("Product not found", 404));
     }
     // Deleting Images From Cloudinary
-  for (let i = 0; i < products.images.length; i++) {
-    await cloudinary.uploader.destroy(products.images[i].public_id);
-  }
+    for (let i = 0; i < products.images.length; i++) {
+      await cloudinary.uploader.destroy(products.images[i].public_id);
+    }
 
     res.status(200).json({
       success: true,
@@ -165,13 +164,12 @@ exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     rating: Number(rating),
     comment,
   };
-console.log(review,"kvifjfi");
+
   const product = await Product.findById(productId);
   const isReviewed = product.reviews.find(
     (rev) => rev.user.toString() === req.user._id.toString()
   );
-  console.log(user.toString(),"user bbbb");
-  console.log(req.user._id.toString(),"vjnduvudv");
+
   if (isReviewed) {
     product.reviews.forEach((rev) => {
       if (rev.user.toString() === req.user._id.toString())
@@ -182,15 +180,11 @@ console.log(review,"kvifjfi");
     product.numOfReviews = product.reviews.length;
   }
 
-console.log(isReviewed,"igtb");
   let avg = 0;
- 
+
   product.reviews.forEach((rev) => {
-    console.log("rating" + rev.rating);
     avg += rev.rating;
-    console.log(avg,"avg");
   });
-  console.log(avg);
 
   product.ratings = avg / product.reviews.length;
 
@@ -260,7 +254,7 @@ exports.deleteReview = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
   });
-});// Get All Product (Admin)
+}); // Get All Product (Admin)
 exports.getAdminProducts = catchAsyncErrors(async (req, res, next) => {
   const products = await Product.find();
 
