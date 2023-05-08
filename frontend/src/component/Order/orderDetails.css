@@ -9,8 +9,9 @@
   }
   
   .orderDetailsContainer {
-    padding: 5vmax;
+    padding: 7vmax;
     padding-bottom: 0%;
+    display: flex;
   }
   
   .orderDetailsContainer > p {
@@ -27,8 +28,12 @@
     margin: 1vmax 0;
   }
   
+  .orderDetailsContainerBox > p {
+    font: 500 2vmax "Roboto";
+    color: black;
+  }
   .orderDetailsContainerBox > div > p {
-    font: 400 1vmax "Roboto";
+    font: 500 1vmax "Roboto";
     color: black;
   }
   .orderDetailsContainerBox > div > span {
@@ -49,7 +54,7 @@
   .orderDetailsCartItemsContainer > div {
     display: flex;
     font: 400 1vmax "Roboto";
-    align-items: center;
+    align-items: right;
     margin: 2vmax 0;
   }
   

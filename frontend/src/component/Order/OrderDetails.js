@@ -36,11 +36,12 @@ console.log(order);
         <MetaData title="Order Details" />
         <div className="orderDetailsPage">
           <div className="orderDetailsContainer">
-            <Typography component="h1">
+            {/* <Typography component="h1">
               Order #{order && order._id}
-            </Typography>
-            <Typography>Shipping Info</Typography>
+            </Typography> */}
+            {/* <Typography>Shipping Info:</Typography> */}
             <div className="orderDetailsContainerBox">
+            <Typography>Shipping Info:</Typography>
               <div>
                 <p>Name:</p>
                 <span>{order.user && order.user.name}</span>
@@ -59,8 +60,9 @@ console.log(order);
                 </span>
               </div>
             </div>
-            <Typography>Payment</Typography>
+            {/* <Typography>Payment:</Typography> */}
             <div className="orderDetailsContainerBox">
+            <Typography>Payment:</Typography>
               <div>
                 <p
                   className={
@@ -83,8 +85,9 @@ console.log(order);
               </div>
             </div>
 
-            <Typography>Order Status</Typography>
+            {/* <Typography>Order Status:</Typography> */}
             <div className="orderDetailsContainerBox">
+            <Typography>Order Status:</Typography>
               <div>
                 <p
                   className={
