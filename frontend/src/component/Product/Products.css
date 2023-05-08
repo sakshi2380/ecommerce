@@ -68,9 +68,10 @@
 
 .filterBox {
   width: 10vmax;
-  position: absolute;
-  top: 10vmax;
+  position: fixed;
+  top: 7vmax;
   left: 4vmax;
+  
 }
 
 .categoryBox {
