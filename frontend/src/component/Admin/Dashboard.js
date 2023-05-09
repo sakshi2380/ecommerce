@@ -8,40 +8,41 @@ import { getAdminProduct } from "../../actions/productAction";
 import { getAllOrders } from "../../actions/orderAction.js";
 import { getAllUsers } from "../../actions/userAction.js";
 import MetaData from "../layout/MetaData";
-
+import PeopleIcon from "@material-ui/icons/People";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import NextWeekIcon from "@mui/icons-material/NextWeek";
 
 const Dashboard = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const { products } = useSelector((state) => state.products);
-  
-    const { orders } = useSelector((state) => state.allOrders);
-  
-    const { users } = useSelector((state) => state.allUsers);
-  
-    let outOfStock = 0;
-  
-    products &&
-      products.forEach((item) => {
-        if (item.Stock === 0) {
-          outOfStock += 1;
-        }
-      });
-  const token = localStorage.getItem("token")
-    useEffect(() => {
-      dispatch(getAdminProduct(token));
-      dispatch(getAllOrders(token));
-      dispatch(getAllUsers(token));
-    }, [dispatch]);
-  
-    let totalAmount = 0;
-    
-    orders &&
-      orders.forEach((item) => {
-        totalAmount += item.totalPrice;
-      });
-  
-    
+  const { products } = useSelector((state) => state.products);
+
+  const { orders } = useSelector((state) => state.allOrders);
+
+  const { users } = useSelector((state) => state.allUsers);
+
+  let outOfStock = 0;
+
+  products &&
+    products.forEach((item) => {
+      if (item.Stock === 0) {
+        outOfStock += 1;
+      }
+    });
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    dispatch(getAdminProduct(token));
+    dispatch(getAllOrders(token));
+    dispatch(getAllUsers(token));
+  }, [dispatch]);
+
+  let totalAmount = 0;
+
+  orders &&
+    orders.forEach((item) => {
+      totalAmount += item.totalPrice;
+    });
+
   return (
     <div className="dashboard">
       <MetaData title="Dashboard - Admin Panel" />
@@ -58,24 +59,25 @@ const Dashboard = () => {
           </div>
           <div className="dashboardSummaryBox2">
             <Link to="/admin/products">
+              <NextWeekIcon className="fffa" />
               <p>Product</p>
               <p>{products && products.length}</p>
             </Link>
             <Link to="/admin/orders">
+              <ListAltIcon className="fffa" />
               <p>Orders</p>
               <p>{orders && orders.length}</p>
             </Link>
             <Link to="/admin/users">
+              <PeopleIcon />
               <p>Users</p>
               <p>{users && users.length}</p>
             </Link>
           </div>
         </div>
-
-       
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
