@@ -9,18 +9,22 @@
   }
   
   .orderDetailsContainer {
-    padding: 7vmax;
+    padding: 5vmax;
     padding-bottom: 0%;
     display: flex;
   }
   
   .orderDetailsContainer > p {
-    font: 400 1.8vmax "Roboto";
+    font: 500 2vmax "Roboto";
+    color: black;
   }
-  
+ .orderDetailsContainerBox > p{
+  font: 500 2vmax "Roboto";
+  color: black;
+ }
   .orderDetailsContainerBox,
   .orderDetailsCartItemsContainer {
-    margin: 2vmax;
+    margin: 2vmax 6vmax;
   }
   
   .orderDetailsContainerBox > div {
@@ -54,7 +58,7 @@
   .orderDetailsCartItemsContainer > div {
     display: flex;
     font: 400 1vmax "Roboto";
-    align-items: right;
+    align-items: center;
     margin: 2vmax 0;
   }
   
@@ -72,6 +76,10 @@
   .orderDetailsCartItemsContainer > div > span {
     font: 100 1vmax "Roboto";
     color: #5e5e5e;
+  }
+  .orderDetailsCartItemsContainer>p{
+    font: 500 2vmax "Roboto";
+    color: black;
   }
   
   @media screen and (max-width: 600px) {
@@ -98,7 +106,10 @@
       font: 400 4vw "Roboto";
       margin: 4vw 0;
     }
-  
+    .orderDetailsCartItemsContainer > p{
+      font: 500 2vmax "Roboto";
+      color: black;
+  }
     .orderDetailsCartItemsContainer > div > img {
       width: 10vw;
     }

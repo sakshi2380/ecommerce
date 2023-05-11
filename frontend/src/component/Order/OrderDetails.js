@@ -103,8 +103,9 @@ console.log(order);
           </div>
 
           <div className="orderDetailsCartItems">
-            <Typography>Order Items:</Typography>
+            {/* <Typography>Order Items:</Typography> */}
             <div className="orderDetailsCartItemsContainer">
+            <Typography>Order Items:</Typography>
               {order.orderItems &&
                 order.orderItems.map((item) => (
                   <div key={item.product}>
