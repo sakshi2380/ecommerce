@@ -70,7 +70,10 @@
   .cartInput > button:hover {
     background-color: rgba(0, 0, 0, 0.767);
   }
-  
+  .cartInput > span {
+    margin-left: 4px;
+    margin-right: 4px;
+    }
   .cartInput > input {
     border: none;
     padding: 0.5vmax;
@@ -154,7 +157,8 @@
       font: 400 1.8vmax "Roboto";
     }
     .cartInput > span {
-        margin: 4px;
+      margin-left: 4px;
+      margin-right: 4px;
       }
     .cartSubtotal {
       padding: 1.5vmax;
