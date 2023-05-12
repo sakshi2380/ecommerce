@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 import {
   ALL_PRODUCT_FAIL,
   ALL_PRODUCT_REQUEST,
@@ -35,18 +35,18 @@ import { BASE_URL } from "../constants/globals";
 // Get All Products
 
 export const getProduct =
-  (keyword = "", currentPage=1,price = [0,200000],category, ratings = 0) =>
+  (keyword = "", currentPage = 1, price = [0, 200000], category, ratings = 0) =>
   async (dispatch) => {
     try {
       dispatch({ type: ALL_PRODUCT_REQUEST });
-      let link = `${BASE_URL}/product?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`
-      
+      let link = `${BASE_URL}/product?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+
       if (category) {
         link = `${BASE_URL}/product?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
       }
 
-    const { data } = await axios.get(link);
-console.log("DAtaa:", data)
+      const { data } = await axios.get(link);
+      console.log("DAtaa:", data);
       dispatch({
         type: ALL_PRODUCT_SUCCESS,
         payload: data,
@@ -60,8 +60,8 @@ console.log("DAtaa:", data)
   };
 // Clearing Errors
 export const clearErrors = () => async (dispatch) => {
-    dispatch({ type: CLEAR_ERRORS });
-  };
+  dispatch({ type: CLEAR_ERRORS });
+};
 
 // Get Products Details
 export const getProductDetails = (id) => async (dispatch) => {
@@ -82,7 +82,7 @@ export const getProductDetails = (id) => async (dispatch) => {
   }
 };
 // NEW REVIEW
-export const newReview = (reviewData,token) => async (dispatch) => {
+export const newReview = (reviewData, token) => async (dispatch) => {
   try {
     dispatch({ type: NEW_REVIEW_REQUEST });
 
@@ -90,29 +90,29 @@ export const newReview = (reviewData,token) => async (dispatch) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization:`${token}`,
-      
+        Authorization: `${token}`,
       },
     };
 
-    const { data } = await axios.put("http://localhost:4000/api/review", reviewData, config);
+    const { data } = await axios.put(
+      "http://localhost:4000/api/review",
+      reviewData,
+      config
+    );
 
     dispatch({
       type: NEW_REVIEW_SUCCESS,
       payload: data.success,
     });
   } catch (error) {
- 
-   toast(error.message)
-    
+    toast(error.message);
+
     dispatch({
       type: NEW_REVIEW_FAIL,
       payload: error.response.data.message,
-      
     });
   }
 };
-
 
 // Get All Products For Admin
 export const getAdminProduct = (token) => async (dispatch) => {
@@ -123,11 +123,13 @@ export const getAdminProduct = (token) => async (dispatch) => {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `${token}`,
-        
       },
     };
 
-    const { data } = await axios.get("http://localhost:4000/api/admin/products",config);
+    const { data } = await axios.get(
+      "http://localhost:4000/api/admin/products",
+      config
+    );
 
     dispatch({
       type: ADMIN_PRODUCT_SUCCESS,
@@ -142,8 +144,7 @@ export const getAdminProduct = (token) => async (dispatch) => {
 };
 
 // Create Product
-export const createProduct = (productData,token) => async (dispatch) => {
- 
+export const createProduct = (productData, token) => async (dispatch) => {
   try {
     dispatch({ type: NEW_PRODUCT_REQUEST });
 
@@ -152,7 +153,6 @@ export const createProduct = (productData,token) => async (dispatch) => {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `${token}`,
-        
       },
     };
 
@@ -167,7 +167,6 @@ export const createProduct = (productData,token) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
-    
     dispatch({
       type: NEW_PRODUCT_FAIL,
       payload: error.response.message,
@@ -175,22 +174,23 @@ export const createProduct = (productData,token) => async (dispatch) => {
   }
 };
 
-
 // Delete Product
-export const deleteProduct = (id,token) => async (dispatch) => {
+export const deleteProduct = (id, token) => async (dispatch) => {
   try {
     const config = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `${token}`,
-        
       },
     };
 
     dispatch({ type: DELETE_PRODUCT_REQUEST });
 
-    const { data } = await axios.delete(`http://localhost:4000/api/admin/product/${id}`,config);
+    const { data } = await axios.delete(
+      `http://localhost:4000/api/admin/product/${id}`,
+      config
+    );
 
     dispatch({
       type: DELETE_PRODUCT_SUCCESS,
@@ -204,9 +204,8 @@ export const deleteProduct = (id,token) => async (dispatch) => {
   }
 };
 
-
 // Update Product
-export const updateProduct = (id, productData,token) => async (dispatch) => {
+export const updateProduct = (id, productData, token) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
 
@@ -215,7 +214,6 @@ export const updateProduct = (id, productData,token) => async (dispatch) => {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `${token}`,
-        
       },
     };
 
@@ -238,20 +236,22 @@ export const updateProduct = (id, productData,token) => async (dispatch) => {
 };
 
 // Get All Reviews of a Product
-export const getAllReviews = (id,token) => async (dispatch) => {
+export const getAllReviews = (id, token) => async (dispatch) => {
   try {
     const config = {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `${token}`,
-        
       },
     };
 
     dispatch({ type: ALL_REVIEW_REQUEST });
 
-    const { data } = await axios.get(`http://localhost:4000/api/allreview?id=${id}`,config);
+    const { data } = await axios.get(
+      `http://localhost:4000/api/allreview?id=${id}`,
+      config
+    );
 
     dispatch({
       type: ALL_REVIEW_SUCCESS,
@@ -266,31 +266,32 @@ export const getAllReviews = (id,token) => async (dispatch) => {
 };
 
 // Delete Review of a Product
-export const deleteReviews = (reviewId,productId,token) => async (dispatch) => {
-  try {
-    const config = {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `${token}`,
-        
-      },
-    };
+export const deleteReviews =
+  (reviewId, productId, token) => async (dispatch) => {
+    try {
+      const config = {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `${token}`,
+        },
+      };
 
-    dispatch({ type: DELETE_REVIEW_REQUEST });
+      dispatch({ type: DELETE_REVIEW_REQUEST });
 
-    const { data } = await axios.delete(
-      `http://localhost:4000/api/allreview?id=${reviewId}&productId=${productId}`,config
-    );
+      const { data } = await axios.delete(
+        `http://localhost:4000/api/allreview?id=${reviewId}&productId=${productId}`,
+        config
+      );
 
-    dispatch({
-      type: DELETE_REVIEW_SUCCESS,
-      payload: data.success,
-    });
-  } catch (error) {
-    dispatch({
-      type: DELETE_REVIEW_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
+      dispatch({
+        type: DELETE_REVIEW_SUCCESS,
+        payload: data.success,
+      });
+    } catch (error) {
+      dispatch({
+        type: DELETE_REVIEW_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+  };

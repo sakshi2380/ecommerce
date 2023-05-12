@@ -1,7 +1,6 @@
 import "./App.css";
 import React from "react";
 
-
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./component/layout/Header/Header.js";
 import WebFont from "webfontloader";
@@ -12,7 +11,7 @@ import ProductDetails from "./component/Product/ProductDetails";
 import Products from "./component/Product/Products";
 import Search from "./component/Product/Search";
 
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UserOption from "./component/layout/Header/UserOption";
 import Profile from "./component/User/Profile";
 import UpdateProfile from "./component/User/UpdateProfile";
@@ -42,18 +41,15 @@ import ProductList from "./component/Admin/ProductList";
 import UpdateProduct from "./component/Admin/UpdateProduct";
 import OrderList from "./component/Admin/OrderList";
 import ProcessOrder from "./component/Admin/ProcessOrder";
-import UsersList from "./component/Admin/UsersList"
-import UpdateUser from "./component/Admin/UpdateUser"
+import UsersList from "./component/Admin/UsersList";
+import UpdateUser from "./component/Admin/UpdateUser";
 import ProductReviews from "./component/Admin/ProductReviews";
 import NotFound from "./component/layout/Not Found/NotFound";
 import Logout from "./component/User/Logout";
 
-
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
   const c1 = localStorage.getItem("token");
-
-  console.log(c1);
 
   React.useEffect(() => {
     WebFont.load({
@@ -84,11 +80,10 @@ function App() {
 
         <Route exact path="/about" element={<About />} />
         <Route exact path="/logout" element={<Logout />} />
-        
 
         <Route path="/" element={<ProtectedRoute />}>
           <Route exact path="/account" element={<Profile />} />
-          
+
           <Route exact path="/me/update" element={<UpdateProfile />} />
           <Route exact path="/password/update" element={<UpdatePasssword />} />
           <Route exact path="/Cart" element={<Cart />} />
@@ -106,8 +101,8 @@ function App() {
           <Route exact path="/admin/orders" element={<OrderList />} />
           <Route exact path="/admin/order/:id" element={<ProcessOrder />} />
           <Route exact path="/admin/users" element={<UsersList />} />
-          <Route exact path="/admin/user/:id" element={<UpdateUser/>} />
-          <Route exact path="/admin/reviews" element={<ProductReviews/>} />
+          <Route exact path="/admin/user/:id" element={<UpdateUser />} />
+          <Route exact path="/admin/reviews" element={<ProductReviews />} />
         </Route>
 
         {/* <Route exact path="/process/payment" element={<Payment />} /> */}

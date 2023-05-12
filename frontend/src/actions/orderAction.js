@@ -1,55 +1,58 @@
 import {
-    CREATE_ORDER_REQUEST,
-    CREATE_ORDER_SUCCESS,
-    CREATE_ORDER_FAIL,
-    MY_ORDERS_REQUEST,
-    MY_ORDERS_SUCCESS,
-    MY_ORDERS_FAIL,
-    ALL_ORDERS_REQUEST,
-    ALL_ORDERS_SUCCESS,
-    ALL_ORDERS_FAIL,
-    UPDATE_ORDER_REQUEST,
-    UPDATE_ORDER_SUCCESS,
-    UPDATE_ORDER_FAIL,
-    DELETE_ORDER_REQUEST,
-    DELETE_ORDER_SUCCESS,
-    DELETE_ORDER_FAIL,
-    ORDER_DETAILS_REQUEST,
-    ORDER_DETAILS_SUCCESS,
-    ORDER_DETAILS_FAIL,
-    CLEAR_ERRORS,
-  } from "../constants/orderConstants";
-  
-  import axios from "axios";
-  
-  // Create Order
-  export const createOrder = (order,token) => async (dispatch) => {
-    try {
-      dispatch({ type: CREATE_ORDER_REQUEST });
-  
-      const config = {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `${token}`,
-        },
-      };
-      const { data } = await axios.post("http://localhost:4000/api/order/new", order, config);
-  
-      dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
-    } catch (error) {
-      dispatch({
-        type: CREATE_ORDER_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
+  CREATE_ORDER_REQUEST,
+  CREATE_ORDER_SUCCESS,
+  CREATE_ORDER_FAIL,
+  MY_ORDERS_REQUEST,
+  MY_ORDERS_SUCCESS,
+  MY_ORDERS_FAIL,
+  ALL_ORDERS_REQUEST,
+  ALL_ORDERS_SUCCESS,
+  ALL_ORDERS_FAIL,
+  UPDATE_ORDER_REQUEST,
+  UPDATE_ORDER_SUCCESS,
+  UPDATE_ORDER_FAIL,
+  DELETE_ORDER_REQUEST,
+  DELETE_ORDER_SUCCESS,
+  DELETE_ORDER_FAIL,
+  ORDER_DETAILS_REQUEST,
+  ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_FAIL,
+  CLEAR_ERRORS,
+} from "../constants/orderConstants";
 
-  // Clearing Errors
+import axios from "axios";
+
+// Create Order
+export const createOrder = (order, token) => async (dispatch) => {
+  try {
+    dispatch({ type: CREATE_ORDER_REQUEST });
+
+    const config = {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `${token}`,
+      },
+    };
+    const { data } = await axios.post(
+      "http://localhost:4000/api/order/new",
+      order,
+      config
+    );
+
+    dispatch({ type: CREATE_ORDER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: CREATE_ORDER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Clearing Errors
 export const clearErrors = () => async (dispatch) => {
   dispatch({ type: CLEAR_ERRORS });
 };
-
 
 // My Orders
 export const myOrders = (token) => async (dispatch) => {
@@ -60,12 +63,15 @@ export const myOrders = (token) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `${token}`,
       },
-    }
+    };
     dispatch({ type: MY_ORDERS_REQUEST });
 
-    const { data } = await axios.get("http://localhost:4000/api/orders/me",config);
+    const { data } = await axios.get(
+      "http://localhost:4000/api/orders/me",
+      config
+    );
 
-    dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders});
+    dispatch({ type: MY_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
     dispatch({
       type: MY_ORDERS_FAIL,
@@ -74,7 +80,7 @@ export const myOrders = (token) => async (dispatch) => {
   }
 };
 
-export const getOrderDetails = (id,token) => async (dispatch) => {
+export const getOrderDetails = (id, token) => async (dispatch) => {
   try {
     dispatch({ type: ORDER_DETAILS_REQUEST });
     const config = {
@@ -83,8 +89,11 @@ export const getOrderDetails = (id,token) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `${token}`,
       },
-    }
-    const { data } = await axios.get(`http://localhost:4000/api/order/${id}`,config);
+    };
+    const { data } = await axios.get(
+      `http://localhost:4000/api/order/${id}`,
+      config
+    );
 
     dispatch({ type: ORDER_DETAILS_SUCCESS, payload: data.order });
   } catch (error) {
@@ -104,10 +113,13 @@ export const getAllOrders = (token) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `${token}`,
       },
-    }
+    };
     dispatch({ type: ALL_ORDERS_REQUEST });
 
-    const { data } = await axios.get("http://localhost:4000/api/admin/orders/",config);
+    const { data } = await axios.get(
+      "http://localhost:4000/api/admin/orders/",
+      config
+    );
 
     dispatch({ type: ALL_ORDERS_SUCCESS, payload: data.orders });
   } catch (error) {
@@ -119,7 +131,7 @@ export const getAllOrders = (token) => async (dispatch) => {
 };
 
 // Update Order
-export const updateOrder = (id, order,token) => async (dispatch) => {
+export const updateOrder = (id, order, token) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_ORDER_REQUEST });
 
@@ -129,7 +141,7 @@ export const updateOrder = (id, order,token) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `${token}`,
       },
-    }
+    };
     const { data } = await axios.put(
       `http://localhost:4000/api/admin/order/${id}`,
       order,
@@ -146,7 +158,7 @@ export const updateOrder = (id, order,token) => async (dispatch) => {
 };
 
 // Delete Order
-export const deleteOrder = (id,token) => async (dispatch) => {
+export const deleteOrder = (id, token) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_ORDER_REQUEST });
     const config = {
@@ -155,8 +167,11 @@ export const deleteOrder = (id,token) => async (dispatch) => {
         "Content-Type": "application/json",
         Authorization: `${token}`,
       },
-    }
-    const { data } = await axios.delete(`http://localhost:4000/api/admin/order/${id}`,config);
+    };
+    const { data } = await axios.delete(
+      `http://localhost:4000/api/admin/order/${id}`,
+      config
+    );
 
     dispatch({ type: DELETE_ORDER_SUCCESS, payload: data.success });
   } catch (error) {
