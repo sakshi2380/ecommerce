@@ -11,7 +11,7 @@ import MetaData from "../layout/MetaData";
 import PeopleIcon from "@material-ui/icons/People";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import NextWeekIcon from "@mui/icons-material/NextWeek";
-
+import Add from "@mui/icons-material/Add";
 const Dashboard = () => {
   const dispatch = useDispatch();
 
@@ -69,7 +69,10 @@ const Dashboard = () => {
               <p>{orders && orders.length}</p>
             </Link>
             <Link to="/admin/users">
-              <PeopleIcon />
+              <PeopleIcon  size="large" area-label="add" >
+              <Add sx={{ fontSize: "100px" }} />
+            
+              </PeopleIcon>
               <p>Users</p>
               <p>{users && users.length}</p>
             </Link>

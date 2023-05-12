@@ -16,6 +16,7 @@
     padding: 2vmax;
     box-sizing: border-box;
     border: 1px solid white;
+    
   }
   
   .ProductDetails > div:last-child {
@@ -44,6 +45,7 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.205);
     width: 70%;
     padding: 1vmax 0;
+    position: unset;
   }
   
   .detailsBlock-2-span {
@@ -227,6 +229,7 @@
     }
     .detailsBlock-2 > span {
       font-size: 1.5vmax;
+      
     }
   
     .detailsBlock-3 > h1 {
@@ -287,3 +290,48 @@
       font: 300 5vw cursive;
     }
   }
+
+
+  /* Drift */
+
+.demo-area {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.demo-trigger {
+  display: inline-block;
+  /* width: 30%; */
+  /* float: left; */
+}
+
+.detail {
+  position: relative;
+  width: 65%;
+  float: left;
+}
+
+@media (max-width: 610px) {
+  .detail,
+  .demo-trigger {
+    float: none;
+  }
+
+  .demo-trigger {
+    display: block;
+    width: 50%;
+    max-width: 200px;
+    margin: 0 auto;
+  }
+
+  .detail {
+    margin: 0;
+    width: auto;
+  }
+}
+.cart_image {
+  width: 400px;
+  height: 400px;
+ 
+}

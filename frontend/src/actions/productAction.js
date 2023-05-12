@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { ToastContainer, toast } from 'react-toastify';
 import {
   ALL_PRODUCT_FAIL,
   ALL_PRODUCT_REQUEST,
@@ -102,9 +102,13 @@ export const newReview = (reviewData,token) => async (dispatch) => {
       payload: data.success,
     });
   } catch (error) {
+ 
+   toast(error.message)
+    
     dispatch({
       type: NEW_REVIEW_FAIL,
       payload: error.response.data.message,
+      
     });
   }
 };
@@ -139,7 +143,7 @@ export const getAdminProduct = (token) => async (dispatch) => {
 
 // Create Product
 export const createProduct = (productData,token) => async (dispatch) => {
-  alert('1')
+ 
   try {
     dispatch({ type: NEW_PRODUCT_REQUEST });
 
@@ -163,9 +167,10 @@ export const createProduct = (productData,token) => async (dispatch) => {
       payload: data,
     });
   } catch (error) {
+    
     dispatch({
       type: NEW_PRODUCT_FAIL,
-      payload: error.response.data.message,
+      payload: error.response.message,
     });
   }
 };

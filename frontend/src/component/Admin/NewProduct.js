@@ -40,6 +40,7 @@ const NewProduct = () => {
   useEffect(() => {
     if (error) {
       alert.error(error);
+      
       dispatch(clearErrors());
     }
 
@@ -52,8 +53,7 @@ const NewProduct = () => {
 
   const createProductSubmitHandler = (e) => {
     e.preventDefault();
-    alert.success("gfijfdi")
-
+    
     const myForm = new FormData();
 
     myForm.set("name", name);
@@ -99,7 +99,7 @@ console.log(name);
         <form
           className="createProductForm"
           encType="multipart/form-data"
-          // onSubmit={createProductSubmitHandler}
+          onSubmit={createProductSubmitHandler}
         >
           <h1>Create Product</h1>
 
@@ -119,6 +119,8 @@ console.log(name);
               type="number"
               placeholder="Price"
               required
+              min={100}
+              max={20000000}
               onChange={(e) => setPrice(e.target.value)}
             />
           </div>
@@ -132,12 +134,13 @@ console.log(name);
               onChange={(e) => setDescription(e.target.value)}
               cols="30"
               rows="1"
+              required
             ></textarea>
           </div>
 
           <div>
             <AccountTreeIcon />
-            <select onChange={(e) => setCategory(e.target.value)}>
+            <select onChange={(e) => setCategory(e.target.value)} required> 
               <option value="">Choose Category</option>
               {categories.map((cate) => (
                 <option key={cate} value={cate}>
@@ -164,6 +167,7 @@ console.log(name);
               accept="image/*"
               onChange={createProductImagesChange}
               multiple
+              required
             />
           </div>
 
@@ -177,7 +181,7 @@ console.log(name);
             id="createProductBtn"
             type="submit"
             disabled={loading ? true : false}
-            onClick={(e)=>createProductSubmitHandler(e)}
+            // onClick={(e)=>createProductSubmitHandler(e)}
           >
             Create
           </Button>

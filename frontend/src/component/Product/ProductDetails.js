@@ -16,6 +16,7 @@ import MetaData from "../layout/MetaData";
 import { useParams } from "react-router-dom";
 import { addItemsToCart } from "../../actions/cartAction";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
+import ReactImageMagnify from "react-image-magnify";
 import {
   Dialog,
   DialogActions,
@@ -43,7 +44,7 @@ const ProductDetails = ({ match }) => {
     readOnly: true,
     precision: 0.5,
   };
-  
+
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
   const [rating, setRating] = useState(0);
@@ -93,6 +94,7 @@ const ProductDetails = ({ match }) => {
 
     if (reviewError) {
       alert.error(reviewError);
+      console.log(reviewError);
       dispatch(clearErrors());
     }
     if (success) {
@@ -102,7 +104,10 @@ const ProductDetails = ({ match }) => {
 
     dispatch(getProductDetails(id));
   }, [dispatch, id, error, alert, reviewError, success]);
-
+  const WATCHURL = "https://demos.imgix.net/wristwatch.jpg";
+  if (product?.images) {
+    var WATCHURL1 = product?.images[0].url;
+  }
   return (
     <Fragment>
       {loading ? (
@@ -110,9 +115,10 @@ const ProductDetails = ({ match }) => {
       ) : (
         <Fragment>
           <MetaData title={`${product.name} -- ECOMMERCE`} />
+
           <div className="ProductDetails">
             <div>
-              <Carousel sx={{ height: 500, width: 500 }}>
+              {/* <Carousel sx={{ height: 500, width: 500 }}>
                 {product.images &&
                   product.images.map((item, i) => (
                     <img
@@ -122,10 +128,38 @@ const ProductDetails = ({ match }) => {
                       alt={`${i} Slide`}
                     />
                   ))}
-              </Carousel>
+              </Carousel> */}
+              <div className="col-lg-6 col-md-12 col-sm-12 col-12">
+                <div className="imageMagni  cart_image">
+                  <div style={{ width: "80%" }}>
+                    <ReactImageMagnify
+                      {...{
+                        smallImage: {
+                          alt: "Wristwatch by Ted Baker London",
+                          isFluidWidth: true,
+                          src: WATCHURL1,
+                          width: 600,
+                          height: 990,
+                        },
+                        largeImage: {
+                          src: WATCHURL1,
+                          width: 1500,
+                          height: 1800,
+                        },
+                        isHintEnabled: true,
+                        enlargedImageContainerDimensions: {
+                          width: "270%",
+                          height: "100%",
+                        },
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div>
+              <div className="zixex"> 
               <div className="detailsBlock-1">
                 <h2>{product.name}</h2>
                 <p>Product # {product._id}</p>
@@ -172,6 +206,7 @@ const ProductDetails = ({ match }) => {
               </button>
             </div>
           </div>
+          </div>
 
           <h3 className="reviewsHeading">REVIEWS</h3>
 
@@ -215,6 +250,7 @@ const ProductDetails = ({ match }) => {
           ) : (
             <p className="noReviews">No Reviews Yet</p>
           )}
+        
         </Fragment>
       )}
     </Fragment>

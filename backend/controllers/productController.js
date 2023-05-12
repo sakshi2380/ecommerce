@@ -9,8 +9,10 @@ cloudinary.config({
   api_secret: "I4V4jOJ2IkliR6k31ASSpp_z1ik",
   secure: true,
 });
+
 exports.createProduct = catchAsyncErrors(async (req, res, next) => {
-  let images = [];
+  try {
+    let images = [];
 
   if (typeof req.body.images === "string") {
     images.push(req.body.images);
@@ -37,11 +39,20 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
   req.body.images = imagesLinks;
   req.body.user = req.user.id;
   const product = await Product.create(req.body);
-
+if(!product){
+  
+}
   res.status(201).json({
     success: true,
     product,
   });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      
+    });
+  }
 });
 // Get All Product
 exports.getAllProducts = catchAsyncErrors(async (req, res, next) => {
