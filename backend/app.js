@@ -13,15 +13,13 @@ const payment = require("./routes/paymentRoute");
 const order = require("./routes/orderRoute");
 
 const app = express();
+
 app.use(express.json());
 
-//Middleware for error
-app.use(errorMiddleware);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(fileUpload());
 app.use(cors());
-
 
 // app.use('/api',product)
 
@@ -29,6 +27,7 @@ app.use("/api", product);
 app.use("/api", user);
 app.use("/api", order);
 app.use("/api", payment);
+//Middleware for error
+app.use(errorMiddleware);
 
 module.exports = app;
-
