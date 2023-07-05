@@ -31,12 +31,12 @@ const Products = ({ match }) => {
   const alert = useAlert();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [price, setPrice] = useState([0, 200000]);
+  const [price, setPrice] = useState([0, 25000]);
   const [category, setCategory] = useState();
 
   const [ratings, setRatings] = useState(0);
 
- 
+
   const {
     products,
     loading,
@@ -48,7 +48,7 @@ const Products = ({ match }) => {
 
   const { keyword } = useParams();
 
-   const setCurrentPageNo = (e) => {
+  const setCurrentPageNo = (e) => {
     setCurrentPage(e);
   };
 
@@ -65,7 +65,7 @@ const Products = ({ match }) => {
     dispatch(getProduct(keyword, currentPage, price, category, ratings));
   }, [dispatch, keyword, currentPage, price, category, ratings, alert, error]);
 
-  
+
   return (
     <Fragment>
       {loading ? (
@@ -90,7 +90,7 @@ const Products = ({ match }) => {
               valueLabelDisplay="auto"
               aria-labelledby="range-slider"
               min={0}
-              max={200000}
+              max={25000}
             />
 
             <Typography>Categories</Typography>

@@ -32,7 +32,7 @@
   margin-top: inherit;
 }
 .dashboardSummary > div > p {
-  background-color: rgba(60, 105, 201, 0.932);
+  background-color: rgb(84, 84, 247);
   color: white;
   font: 300 1.3rem "Roboto";
   text-align: center;

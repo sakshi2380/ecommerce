@@ -15,7 +15,7 @@ import Star from "@material-ui/icons/Star";
 
 import SideBar from "./Sidebar";
 import { DELETE_REVIEW_RESET } from "../../constants/productConstants";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const ProductReviews = () => {
   const dispatch = useDispatch();
@@ -34,11 +34,11 @@ const ProductReviews = () => {
   const [productId, setProductId] = useState("");
 
   const deleteReviewHandler = (reviewId) => {
-    dispatch(deleteReviews(reviewId, productId,token));
+    dispatch(deleteReviews(reviewId, productId, token));
   };
   useEffect(() => {
     if (productId.length === 24) {
-      dispatch(getAllReviews(productId,token));
+      dispatch(getAllReviews(productId, token));
     }
     if (error) {
       alert.error(error);
@@ -55,7 +55,7 @@ const ProductReviews = () => {
       history("/admin/reviews");
       dispatch({ type: DELETE_REVIEW_RESET });
     }
-  }, [dispatch, alert, error, deleteError, history, isDeleted, productId,token]);
+  }, [dispatch, alert, error, deleteError, history, isDeleted, productId, token]);
 
   const columns = [
     { field: "id", headerName: "Review ID", minWidth: 200, flex: 0.5 },
@@ -125,7 +125,7 @@ const ProductReviews = () => {
 
   const productReviewsSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(getAllReviews(productId,token));
+    dispatch(getAllReviews(productId, token));
   };
   return (
     <Fragment>
@@ -177,7 +177,7 @@ const ProductReviews = () => {
         </div>
       </div>
     </Fragment>
-  
+
   )
 };
 

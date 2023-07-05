@@ -2,16 +2,16 @@ import React from 'react'
 import { Link } from "react-router-dom";
 import ReactStars from "react-star-rating-component";
 
-const ProductCart = ({product}) => {
+const ProductCart = ({ product }) => {
   const options = {
-    edit:false,
-    color:"rgba(20,20,20,0.1)",
-    activeColor:"tomato",
-    size:window.innerWidth < 600 ? 20:25,
+    edit: false,
+    color: "rgba(20,20,20,0.1)",
+    activeColor: "rgb(84, 84, 247)",
+    size: window.innerWidth < 600 ? 20 : 25,
     value: product.ratings,
     readOnly: true,
     precision: 0.5,
-    isHalf:true
+    isHalf: true
   }
   return (
     <Link className="productCard" to={`/product/${product._id}`}>

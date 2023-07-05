@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const UserOption = ({ user }) => {
   const { cartItems } = useSelector((state) => state.cart);
-  
+
   const [open, setOpen] = useState(false);
   const history = useNavigate();
   const alert = useAlert();
@@ -26,7 +26,7 @@ const UserOption = ({ user }) => {
     {
       icon: (
         <ShoppingCartIcon
-          style={{ color: cartItems.length > 0 ? "tomato" : "unset" }}
+          style={{ color: cartItems.length > 0 ? "rgb(84, 84, 247)" : "unset" }}
         />
       ),
       name: `Cart(${cartItems.length})`,
@@ -57,7 +57,7 @@ const UserOption = ({ user }) => {
     history("/cart");
   }
   function logoutUser() {
-      dispatch(logout());
+    dispatch(logout());
     alert.success("Logout Successfully");
   }
   return (

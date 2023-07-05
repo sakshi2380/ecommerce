@@ -78,11 +78,13 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
     expires: new Date(Date.now()),
     httpOnly: true,
   });
+  if (res.headersSent !== true) {
 
-  res.status(200).json({
-    success: true,
-    message: "Logged Out",
-  });
+    res.status(200).json({
+      success: true,
+      message: "Logged Out",
+    });
+  }
 });
 
 // Forgot Password
@@ -123,8 +125,8 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
       status: 200,
     });
   } catch (error) {
-    
-    
+
+
     await user.save({ validateBeforeSave: false });
 
     // return next(new ErrorHander(error.message, 500));
@@ -136,10 +138,10 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
 });
 exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
   const resetPasswordToken = req.body.otp
-  console.log(resetPasswordToken,"vjuhudhu");
+  console.log(resetPasswordToken, "vjuhudhu");
   const user = await User.findOne({
     resetPasswordToken,
-    
+
   });
   console.log();
   if (!user) {
@@ -156,7 +158,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 
   user.password = req.body.password;
   user.resetPasswordToken = undefined;
-  user.resetPasswordExpire=undefined
+  user.resetPasswordExpire = undefined
 
   await user.save();
 
@@ -164,7 +166,7 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
- 
+
 
   const newUserData = {
     name: req.body.name,
@@ -198,6 +200,7 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    user
   });
 });
 
@@ -358,7 +361,7 @@ exports.signup = catchAsyncErrors(async (req, res, next) => {
 
 exports.otpVerify = catchAsyncErrors(async (req, res, next) => {
   const otpHolder = await Otp.find({
-    otp:req.body.otp,
+    otp: req.body.otp,
   });
   console.log(otpHolder);
   // if (otpHolder.length === 0) {

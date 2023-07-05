@@ -13,12 +13,12 @@ const Header = () => {
   return (
     <>
       <ReactNavbar
-        burgerColorHover="#eb4034"
+        burgerColorHover="rgb(84, 84, 247)"
         logo={logo}
         logoWidth="20vmax"
         navColor1="white"
         logoHoverSize="10px"
-        logoHoverColor="#ffffff"
+        logoHoverColor="rgb(84, 84, 247)"
         link1Text="Home"
         link2Text="Products"
         link3Text={isAuthenticated ? "Logout" : "Login"}
@@ -33,7 +33,7 @@ const Header = () => {
         nav2justifyContent="flex-end"
         nav3justifyContent="flex-start"
         nav4justifyContent="flex-start"
-        link1ColorHover="#eb4034"
+        link1ColorHover="rgb(84, 84, 247)"
         link1Margin="1vmax"
         profileIconUrl="/login"
         profileIconColor="rgba(35, 35, 35,0.8)"
